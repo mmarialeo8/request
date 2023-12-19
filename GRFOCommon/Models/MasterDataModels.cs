@@ -12,8 +12,10 @@ namespace GRFOCommon.Models
         public virtual string tableName { get; set; }
         public virtual string columnId { get; set; }
         public virtual string columnIdCaption { get; set; }
-        public virtual string columnValue { get; set; }
+        public virtual string columnIdValue { get; set; }
+        public virtual string columnValueId { get; set; }
         public virtual string columnValueCaption { get; set; }
+        public virtual string columnValue { get; set; }
     }
 
 
@@ -25,5 +27,15 @@ namespace GRFOCommon.Models
     public class MasterDataResult : TransactionWrapper
     {
         public List<MasterDataModels> data { get; set; }
+    }
+
+    public class MasterDataPostModels
+    {
+        public virtual int Id { get; set; }
+        public virtual string tableName { get; set; }
+        public virtual string columnId { get; set; }
+        public virtual string columnValue { get; set; }
+        public virtual string columnCaption { get; set; }
+        public virtual string fieldValue { get; set; }
     }
 }

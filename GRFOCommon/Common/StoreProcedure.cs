@@ -19,5 +19,11 @@ namespace GJCommon.Common
         {
             public const string SelectAll = "[dbo].[hadoop_Data_SelectAll]";
         }
+
+        public class master
+        {
+            public const string Save = "[dbo].[master_Data_Save]";
+        }
+
     }
 }

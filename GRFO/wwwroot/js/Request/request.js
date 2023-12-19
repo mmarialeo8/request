@@ -214,14 +214,7 @@ var request_events = function () {
                 t2CustomerQty: $("#t2CustomerQty").val(),
                 mg3: $("#mg3").val(),
                 prdImplementation: $("#prdImplementation").prop("checked"),
-                prdDate: $("#prdDate").val(),
-
-                //packDate: $("#packDate").val(),
-                ////requestCategoryId: $("#requestCategoryId").prop("checked"),
-                //// showReceiptNo: $("#showReceiptNo").prop("checked"),
-                //lateFee: $("#lateFee").val(),
-                //lateFeeinterval: $("#lateFeeinterval").val(),
-                //showColumns: 0
+                prdDate: $("#prdDate").val(),              
             }
 
             //alert(JSON.stringify(data))

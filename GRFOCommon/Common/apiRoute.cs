@@ -18,11 +18,18 @@ namespace GJCommon.Common
         }
         public class master
         {
-            public const string get = "/master/get-master-data";            
+            public const string get = "/master/get-master-data";
+            public const string AddEdit = "/master/AddEdit";            
+            public const string save = "/master/save-data";            
         }
         public class hadoop
         {
             public const string get = "/master/get-hadoop";
+        }
+
+        public class masterdata
+        {
+            public const string get = "/master/list";            
         }
     }
 }

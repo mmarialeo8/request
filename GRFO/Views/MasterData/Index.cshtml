@@ -1,0 +1,292 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Datatables -->
+<link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+<link href="/vendors/jstree/jstree.min.css" rel="stylesheet" />
+
+
+<input type="hidden" id="hdfTableName"/>
+<input type="hidden" id="hdfcolumnId"/>
+<input type="hidden" id="hdfcolumnIdCaption"/>
+<input type="hidden" id="hdfcolumnName"/>
+<input type="hidden" id="hdfcolumnIdValue"/>
+<input type="hidden" id="hdfcolumnValueId"/>
+<input type="hidden" id="hdfcolumnValueCaption"/>
+<input type="hidden" id="hdfcolumnValue"/>
+<input type="hidden" id="hdfcaptionName"/>
+
+@* <input type="hidden" id="hdfColumnValue"/> *@
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>@ViewData["Title"] <small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#">Settings 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Settings 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Tables</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div id="jstree-1">
+                                    <ul>
+                                        <li onclick="loadTableData('BusinessType','BusinessTypeId','BusinessType','Business Type')">
+                                            <a data-id="1" data-caption="1">
+                                                Business Type
+                                            </a>
+                                        </li>
+                                        <li onclick="loadTableData('CustomerLocations','CustomerLocationId','CustomerLocations','Customer Locations')">
+                                            <a data-id="1" data-caption="1">
+                                                Customer Locations
+                                            </a>
+                                        </li>
+                                        <li onclick="loadTableData('RepairCategory','RepairCategoryId','RepairCategory','Repair Category')">
+                                            <a data-id="1" data-caption="1">
+                                                Repair Category
+                                            </a>
+                                        </li>
+                                        <li onclick="loadTableData('RepairLocation','RepairLocationId','RepairLocation','Repair Location')">
+                                            <a data-id="1" data-caption="1">
+                                                Repair Category
+                                            </a>
+                                        </li>
+                                         <li onclick="loadTableData('RequestorSource','RequestorSourceId','RequestorSource','Requestor Source')">
+                                            <a data-id="1" data-caption="1">
+                                                Requestor Source
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="x_panel">
+                            <div class="row">
+                                <div class="col-sm-4">                        
+                                    <a href="javascript:void(0);" class="btn btn-success mb-2 btnAdd"><i class="mdi mdi-plus-circle me-2"></i> Add </a>                       
+                                </div>
+                            </div>
+                            @* <div class="x_title">
+                                <h2>@ViewData["TableCaption"]asd</h2>
+                                <div class="clearfix"></div>
+                            </div>s *@
+                            <div class="x_content">
+                                <table id="dtMasterData" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="thcaption"></th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divmasterDataContent">
+</div>
+
+@section Scripts
+{
+    <!-- Datatables -->
+    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+
+    <script src="/vendors/jstree/jstree.min.js"></script>
+    <script src="/vendors/jstree/demo.jstree.js"></script>
+
+    @* <script src="/js/request/request.js" asp-append-version="true"></script>*@
+    <script asp-append-version="true">
+        $(document).ready(function () {
+            refreshMasterData(0);
+            $('#master_TableId').val(0);
+        });
+
+        function loadTableData(tableName, columnId, columnName, captionName) {
+            $('.thcaption').html(captionName)
+            refreshMasterData(tableName, columnId, columnName, captionName);
+        }
+
+        function refreshMasterData(tableName, columnId, columnName, captionName) {
+            
+            $('#hdfTableName').val(tableName);
+            $('#hdfcolumnId').val(columnId);
+            $('#hdfcolumnName').val(columnName);
+            $('#hdfcaptionName').val(captionName);
+
+            $('.btnAdd').removeClass('disabled');
+
+             $('#dtMasterData').DataTable({
+                 "pageLength": 50,
+                 "destroy": true,
+                 "bProcessing": true,
+                 "bServerSide": false,
+                 'ajax': {
+                     url: '/master/list-json',
+                     type: 'GET',
+                     data: {
+                         tableName: tableName,
+                         columnId:columnId,
+                         columnName:columnName,
+                         captionName:captionName
+                     }
+                 },
+                 'columns': [
+                     { "data": "columnValue" },
+                 ],
+
+                 'columnDefs': [
+                     {
+                         'targets': 1,
+                         'searchable': false,
+                         'orderable': false,
+                         'width': '1%',
+                         'data': 'columnId',
+                         'className': 'dt-body-center',
+                         'render': function (data, type, JsonResultRow, meta) {
+                             return "<a href='javascript:void(0);' class='text-primary' onclick='edit(" + JsonResultRow.columnId + ")' title='Click here to edit record'><i class='fa fa-pencil'></i></a>";
+                         }
+                     }],
+
+                 'order': [1, 'asc'],
+             });
+             // $('#master_TableId').val(masterDataId);
+         }
+
+           function edit(Id) {
+            $.ajax({
+                url: '/master/add-edit',
+                contentType: 'application/html; charset=utf-8',
+                data: {
+                    Id: Id,
+                    tableName: $('#hdfTableName').val(),
+                    columnId: $('#hdfcolumnId').val(),
+                    columnName:$('#hdfcolumnName').val(),
+                    columnCaption:$('#hdfcaptionName').val(),                    
+                },
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    $('#divmasterDataContent').empty();
+                    $('#divmasterDataContent').html(result);
+                    $('#modalMasterDataAddEdit').modal('show');
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            })
+        }
+
+         $(".btnAdd").click(function (e) {
+            $.ajax({
+                url: '/master/add-edit',
+                contentType: 'application/html; charset=utf-8',
+                data: {
+                    Id: 0,
+                    tableName: $('#hdfTableName').val(),
+                    columnId: $('#hdfcolumnId').val(),
+                    columnName:$('#hdfcolumnName').val(),
+                    columnCaption:$('#hdfcaptionName').val(), 
+                },
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    $('#divmasterDataContent').empty();
+                    $('#divmasterDataContent').html(result);
+                    $('#modalMasterDataAddEdit').modal('show');
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            })
+        });
+
+         $(document).on("click", ".btnSave", function () {
+
+            var data = {             
+                 id: $("#columnId").val(),
+                     tableName: $('#hdfTableName').val(),
+                     columnId: $('#hdfcolumnId').val(),
+                     columnValue: $('#hdfcolumnName').val(),
+                     columnCaption: $('#hdfcaptionName').val(),
+                     fieldValue: $('#columnValue').val()
+             };
+
+            $.ajax({
+                url: '/master/save',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                     data:data
+                },
+                success: function (result) {
+                    alert(result.transactionMessage);
+                    if (result.isTransactionDone) {
+                        $('#modalMasterDataAddEdit').modal('hide');
+                        refreshMasterData($('#hdfTableName').val(), $('#hdfcolumnId').val(), $('#hdfcolumnName').val(), $('#hdfcaptionName').val());
+                    }
+                },
+                error: function (xhr, status) {
+                    //alert(status);
+                }
+            });
+           
+        });
+
+    </script>
+}
