@@ -1,0 +1,191 @@
+﻿@model RequestPostModels
+
+<link href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
+<!-- Show the cropped image in modal -->
+<div class="modal fade docs-cropped" id="staticBackdrop" aria-hidden="true" role="dialog" tabindex="-1">
+    <div class="modal-dialog-lg">
+        <form id="frmRequestDetails" class="form-horizontal form-label-left" novalidate>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Add/Edit Request</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" asp-for="requestId" />
+                    <input type="hidden" id="hdfrequestCategoryId" value="@Model.requestCategoryId" />
+                    <input type="hidden" id="hdfbusinessTypeId" value="@Model.businessTypeId" />
+                    <input type="hidden" id="hdfrequestSourceId" value="@Model.requestSourceId" />
+                    <input type="hidden" id="hdfcustomerLocationId" value="@Model.customerLocationId" />
+                    <input type="hidden" id="hdfrepairLocationId" value="@Model.repairLocationId" />
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="requestCategoryId" class="form-control" placeholder="Request Category" required="required">
+                                <option value="0">Request Category</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="businessTypeId" class="form-control" placeholder="Business Type" required="required">
+                                <option value="">Business Type</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="requestSourceId" class="form-control" placeholder="Request Source" required="required">
+                                <option value="">Request Source</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="requestorProjectGroup" type="text"
+                                   class="form-control has-feedback-left"
+                                   placeholder="Requestor Project Group" required="required">
+                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="requestor" type="text" class="form-control has-feedback-left" placeholder="Requestor" required="required">
+                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="basePartNumber" type="text" class="form-control has-feedback-left"
+                                   placeholder="Base Part Number"
+                                   required="required"
+                                   onchange="request_events.onBasePartNumberChange(this);">
+                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="solutionPartNumber" type="text" class="form-control has-feedback-left" placeholder="Solution Part Number" required="required">
+                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="needByDate" type="text" class="form-control has-feedback-left" placeholder="Need By Date" required="required">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="buNameId" class="form-control" placeholder="First Name" required="required">
+                                <option value="">BU Name</option>
+                                <option value="1">test</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="repairLocationId" class="form-control" placeholder="Repair Site" required="required">
+                                <option value="">Repair Site</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="targetCustomer" type="text" class="form-control has-feedback-left" placeholder="Target Customer"
+                                   required="required">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="customerLocationId" class="form-control" placeholder="Repair Site" required="required">
+                                <option value="">Customer Location</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="annualRepairForecast1" type="text" class="form-control has-feedback-left"
+                                   placeholder="Annual Repair Forecast (Y1)"
+                                   required="required">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="annualRepairForecast2" type="text" class="form-control has-feedback-left"
+                                   placeholder="Annual Repair Forecast (Y2)" required="required">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="comments" type="text" class="form-control has-feedback-left" placeholder="Comments"
+                                   required="required">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+
+                    </div>
+                    <h4 class="modal-title">_</h4>
+
+                    <div id="divBasePartNumber">
+                    </div>
+                                                       
+                    <h4 class="modal-title">_</h4>
+
+                    <div class="row">
+
+                        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                            <input asp-for="prdImplementation" type="text" class="form-control has-feedback-left"
+                                   placeholder="Extended Spend Potential" required="required">
+                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                            <input type="text" class="form-control has-feedback-left" asp-for="prdDate"
+                                   placeholder="Pilot Execution Date" required="required">
+                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="screeningStatus" class="form-control" placeholder="Repair Site" required="required">
+                                <option value="">Screening Status</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="businessCaseStatus" class="form-control" placeholder="Repair Site" required="required">
+                                <option value="">Business Case Status</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <select asp-for="pilotReviewStatus" class="form-control" placeholder="Repair Site" required="required">
+                                <option value="">Pilot Review Status</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group checkbox">
+                            <label>
+                                <input type="checkbox" class="flat"> Pilot Execution
+                            </label>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                            <input type="text" class="form-control has-feedback-left" asp-for="prdDate"
+                                   placeholder="Pilot Execution Date" required="required">
+                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" onclick="request_events.saveRequest()">Save</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div><!-- /.modal -->
