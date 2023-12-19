@@ -147,6 +147,8 @@ var request_events = function () {
                         .on('change', 'select.required', validator.checkField)
                         .on('keypress', 'input[required][pattern]', validator.keypress);
 
+                    // requestSourceChange();
+
                 },
                 error: function (xhr, status) {
                     alert(status);
@@ -187,13 +189,33 @@ var request_events = function () {
                 }
             });
         },
+        requestSourceChange = function () {
 
+            $("#divExectiveName").css("display", "none")
+            $("#divCCNumber").css("display", "none")
+            $("#divGRFOComment").css("display", "none")
+
+            if ($("#requestSourceId").val() == 2) {
+                $("#divExectiveName").css("display", "")
+            }
+            if ($("#requestSourceId").val() == 3) {
+                $("#divCCNumber").css("display", "")
+            }
+            if ($("#requestSourceId").val() == 4) {
+                $("#divGRFOComment").css("display", "")
+            }
+        },
         saveRequest = function () {
             var data = {
                 requestId: $("#requestId").val(),
                 requestCategoryId: $("#requestCategoryId").val(),
                 businessTypeId: $("#businessTypeId").val(),
                 requestSourceId: $("#requestSourceId").val(),
+
+                exectiveName: $("#exectiveName").val(),
+                ccNumber: $("#ccNumber").val(),
+                grfoComment: $("#grfoComment").val(),
+
                 requestorProjectGroup: $("#requestorProjectGroup").val(),
                 requestor: $("#requestor").val(),
                 basePartNumber: $("#basePartNumber").val(),
@@ -214,10 +236,8 @@ var request_events = function () {
                 t2CustomerQty: $("#t2CustomerQty").val(),
                 mg3: $("#mg3").val(),
                 prdImplementation: $("#prdImplementation").prop("checked"),
-                prdDate: $("#prdDate").val(),              
+                prdDate: $("#prdDate").val(),
             }
-
-            //alert(JSON.stringify(data))
 
             if (formValidate("#frmRequestDetails")) {
                 $.ajax({
@@ -269,6 +289,19 @@ var request_events = function () {
                     }
                 });
             }
+        },
+        downloadData = function () {
+            $.ajax({
+                url: '/request/download-data',
+                type: "GET",
+                dataType: 'json',
+                data: {},
+                success: function (result) {
+                },
+                error: function (xhr, status) {
+                    //showToasterMessage(status);
+                }
+            });
         }
     return {
         loadRequest: loadRequest,
@@ -277,6 +310,8 @@ var request_events = function () {
         editRequest: editRequest,
         viewRequest: viewRequest,
         saveRequest: saveRequest,
-        updateRequest: updateRequest
+        updateRequest: updateRequest,
+        requestSourceChange: requestSourceChange,
+        downloadData: downloadData
     }
 }();

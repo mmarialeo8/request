@@ -1,3 +1,4 @@
+using ClosedXML.Excel;
 using GJCommon.Common;
 using GJCommon.Models;
 using GJSamp.Models;
@@ -5,6 +6,8 @@ using GRFOCommon.Common;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net.Mime;
+using System.Text;
 
 namespace GJSamp.Controllers
 {
@@ -83,6 +86,35 @@ namespace GJSamp.Controllers
             return new JsonResult(objRequest);
         }
 
+        [HttpGet("/request/download-data")]
+        public async Task<IActionResult> DownloadData()
+        {
+            var result = ApiCall.GetAsync(CommonMembers.apiBaseUrl, apiRoute.request.reportdata, null);
+            requestReportResult objRequest = JsonConvert.DeserializeObject<requestReportResult>(result);
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Registration List");
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "registerId";
+
+                foreach (var repot in objRequest.report)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = repot.RequestId.ToString();
+                }
+
+                string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                string fileName = "authors.xlsx";
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, contentType, fileName);
+                }
+
+            }
+        }
         public IActionResult Privacy()
         {
             return View();

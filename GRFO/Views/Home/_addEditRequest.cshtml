@@ -42,12 +42,31 @@
                                         </div>
 
                                         <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="requestSourceId" class="form-control" placeholder="Request Source" required="required">
+                                            <select asp-for="requestSourceId" class="form-control" placeholder="Request Source" required="required" onchange="request_events.requestSourceChange()">
                                                 <option value="">Request Source</option>
                                             </select>
                                         </div>
                                     </div>
-
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group" id="divExectiveName" style="display:none">
+                                            <input asp-for="exectiveName" type="text"
+                                                   class="form-control has-feedback-left"
+                                                   placeholder="Exective Name" required="required">
+                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group" id="divCCNumber" style="display:none">
+                                            <input asp-for="ccNumber" type="text"
+                                                   class="form-control has-feedback-left"
+                                                   placeholder="CC Number" required="required">
+                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group" id="divGRFOComment" style="display:none">
+                                            <input asp-for="grfoComment" type="text"
+                                                   class="form-control has-feedback-left"
+                                                   placeholder="GRFO Comment" required="required">
+                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
                                     <div class="row">
 
                                         <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
@@ -153,16 +172,16 @@
                                         @if (Model.requestId > 0)
                                         {
                                             await Html.RenderPartialAsync("_hadoopData", new hadoopDataModels
-                                            {
-                                                partDescription = Model.partDescription,
-                                                annualRepairForecast = Model.annualRepairForecast,
-                                                stdCostBasePart = Model.stdCostBasePart,
-                                                extendedSpendPotential = Model.extendedSpendPotential,
-                                                t1CustomerQty = Model.t1CustomerQty,
-                                                t2CustomerQty = Model.t2CustomerQty,
-                                                mg3 = Model.mg3
-                                            });
-                                        }                                        
+                {
+                    partDescription = Model.partDescription,
+                    annualRepairForecast = Model.annualRepairForecast,
+                    stdCostBasePart = Model.stdCostBasePart,
+                    extendedSpendPotential = Model.extendedSpendPotential,
+                    t1CustomerQty = Model.t1CustomerQty,
+                    t2CustomerQty = Model.t2CustomerQty,
+                    mg3 = Model.mg3
+                });
+                                        }
                                     </div>
 
                                 </div>

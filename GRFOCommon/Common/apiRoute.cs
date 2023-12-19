@@ -15,6 +15,7 @@ namespace GJCommon.Common
             public const string save = "/request/save";
             public const string update = "/request/update";
             public const string delete = "/request/delete/{requestid}";
+            public const string reportdata = "/request/report-data";
         }
         public class master
         {

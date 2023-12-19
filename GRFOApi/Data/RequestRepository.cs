@@ -12,6 +12,8 @@ namespace GJApi.Data
         Task<RequestResponse> GetRequestById(int requestId);
         Task<TransactionWrapper> SaveRequest(RequestPostModels data);
         Task<TransactionWrapper> UpdateRequest(RequestUpdateModels data);
+        Task<requestReportResult> ReportData();
+        
     }
     public class RequestRepository : IRequest
     {
@@ -132,7 +134,7 @@ namespace GJApi.Data
                             PrdDate = data.prdDate,
                             ExectiveName = data.exectiveName,
                             GRFOComment = data.grfoComment,
-
+                            ccNumber = data.ccNumber
                         },
                         commandType: CommandType.StoredProcedure)).FirstOrDefault();
                     if (res != null)
@@ -183,6 +185,40 @@ namespace GJApi.Data
                     {
                         result.isTransactionDone = false;
                         result.transactionMessage = "Error in save";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result.isTransactionDone = false;
+                    result.transactionMessage = ex.ToString();
+                }
+            }
+            return result;
+        }
+        
+        public async Task<requestReportResult> ReportData()
+        {
+            var result = new requestReportResult();
+            using (IDbConnection _db = new SqlConnection(sConnectionString))
+            {
+                try
+                {
+                    var res = (await _db.QueryAsync<requestReportModels>
+                        (sql: StoreProcedure.Request.ReportData,
+                        new
+                        {
+                            
+                        },
+                        commandType: CommandType.StoredProcedure)).AsList();
+                    if (res != null)
+                    {
+                        result.isTransactionDone = true;
+                        result.report = res;
+                    }
+                    else
+                    {
+                        result.isTransactionDone = false;
+                        result.transactionMessage = "No Records Found";
                     }
                 }
                 catch (Exception ex)

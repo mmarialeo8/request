@@ -53,6 +53,8 @@ namespace GJCommon.Models
         public virtual string prdDate { get; set; }
         public virtual string? exectiveName { get; set; }
         public virtual string? grfoComment { get; set; }
+        public virtual string? ccNumber { get; set; }
+
     }
 
     public class RequestUpdateModels
@@ -96,4 +98,51 @@ namespace GJCommon.Models
     {
         public List<hadoopDataModels> hadoop { get; set; }
     }
+
+
+
+
+
+    public class requestReportModels
+    {
+        public string RequestId { get; set; }
+        public string RepairCategory { get; set; }
+        public string BusinessType { get; set; }
+        public string RequestorSource { get; set; }
+        public string RequestorProjectGroup { get; set; }
+        public string Requestor { get; set; }
+        public string BasePartNumber { get; set; }
+        public string PartDescription { get; set; }
+        public string SolutionPartNumber { get; set; }
+        public string NeedByDate { get; set; }
+        public string BUNameId { get; set; }
+        public string RepairLocation { get; set; }
+        public string TargetCustomer { get; set; }
+        public string CustomerLocations { get; set; }
+        public string AnnualRepairForecast1 { get; set; }
+        public string AnnualRepairForecast2 { get; set; }
+        public string STDCostBasePart { get; set; }
+        public string AnnualRepairForecast { get; set; }
+        public string ExtendedSpendPotential { get; set; }
+        public string T1CustomerQty { get; set; }
+        public string T2CustomerQty { get; set; }
+        public string MG3 { get; set; }
+        public string Comments { get; set; }
+        public string ScreeningStatus { get; set; }
+        public string BusinessCaseStatus { get; set; }
+        public string PilotReviewStatus { get; set; }
+        public string PrdImplementation { get; set; }
+        public string PrdDate { get; set; }
+        public string ExectiveName { get; set; }
+        public string GRFOComment { get; set; }
+        public string CCNumber { get; set; }
+
+    }
+
+
+    public class requestReportResult : TransactionWrapper
+    {
+        public List<requestReportModels> report { get; set; }
+    }
+
 }

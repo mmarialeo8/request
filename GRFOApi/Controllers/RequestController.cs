@@ -3,6 +3,7 @@ using GJCommon.Common;
 using GJCommon.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GJApi.Controllers
 {
@@ -45,6 +46,13 @@ namespace GJApi.Controllers
         public async Task<JsonResult> Delete(int requestid)
         {
             return new JsonResult("");
+        }
+
+
+        [HttpGet(apiRoute.request.reportdata)]
+        public async Task<JsonResult> ReportData()
+        {
+            return new JsonResult(await _iRequest.ReportData());
         }
 
     }

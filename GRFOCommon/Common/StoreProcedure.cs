@@ -13,6 +13,10 @@ namespace GJCommon.Common
             public const string SelectAll = "[dbo].[Request_SelectAll]";
             public const string Save = "[dbo].[Request_Save]";
             public const string Update = "[dbo].[Request_Status_Update]";
+
+
+            public const string ReportData = "[dbo].[Request_Report]";
+
         }
 
         public class hadoop
