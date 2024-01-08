@@ -108,6 +108,54 @@ var request_events = function () {
                     alert(status);
                 }
             });
+            onBussinessTypeChange();
+        },
+
+        onBussinessTypeChange = function () {
+            var bussinessType = $("#businessTypeId option:selected").text();
+            var basePartNumber = $('#basePartNumber').val();
+            var solutionPartNumber = $('#solutionPartNumber').val();
+
+            if (bussinessType == "BtoW") {
+                $('#solutionPartNumber').val(basePartNumber + 'W');
+            }
+            else if (bussinessType == "CPR") {
+                $('#solutionPartNumber').val(basePartNumber + 'R');
+            }
+            else if (bussinessType == "VU") {
+                $('#solutionPartNumber').val(basePartNumber + 'VU');
+            }
+            //}
+            //else if (bussinessType == "6K") {
+            //    if (!solutionPartNumber.match("^6000")) {
+            //        alert('Invalid Solution part number')
+            //    }
+            //}
+            else
+                $('#solutionPartNumber').val('');
+
+            onSolutionPartNumberChange();
+        },
+        onSolutionPartNumberChange = function () {
+            var bussinessType = $("#businessTypeId option:selected").text();
+            var solutionPartNumber = $('#solutionPartNumber').val();
+
+        if (bussinessType == "TKM") {
+            if ($.trim(solutionPartNumber).length > 0) {
+                if (!solutionPartNumber.match("^0247")) {
+                    alert('Invalid Solution part number')
+                }
+            }
+        }
+        else if (bussinessType == "6K") {
+            if ($.trim(solutionPartNumber).length > 0) {
+                if (!solutionPartNumber.match("^6000")) {
+                    alert('Invalid Solution part number')
+                }
+            }
+        }
+
+
         },
 
         editRequest = function (requestId) {
@@ -312,6 +360,8 @@ var request_events = function () {
         saveRequest: saveRequest,
         updateRequest: updateRequest,
         requestSourceChange: requestSourceChange,
-        downloadData: downloadData
+        downloadData: downloadData,
+        onBussinessTypeChange: onBussinessTypeChange,
+        onSolutionPartNumberChange: onSolutionPartNumberChange
     }
 }();
