@@ -16,6 +16,7 @@ namespace GRFO.Controllers
 
             _configuration = configuration;
             CommonMembers.apiBaseUrl = _configuration.GetSection("AppSettings:apiBaseUrl").Value;
+        
         }
 
         [Route("/master/master-data")]
