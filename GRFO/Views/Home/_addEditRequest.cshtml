@@ -36,7 +36,7 @@
                                         </div>
 
                                         <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="businessTypeId" class="form-control" placeholder="Business Type" required="required">
+                                            <select asp-for="businessTypeId" class="form-control" placeholder="Business Type" required="required" onchange="request_events.onBussinessTypeChange(this);">
                                                 <option value="">Business Type</option>
                                             </select>
                                         </div>
@@ -92,7 +92,8 @@
 
                                     <div class="row">
                                         <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="solutionPartNumber" type="text" class="form-control has-feedback-left" placeholder="Solution Part Number" required="required">
+                                            <input asp-for="solutionPartNumber" type="text" class="form-control has-feedback-left" placeholder="Solution Part Number"
+                                                   required="required" onchange="request_events.onSolutionPartNumberChange()">
                                             <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
                                         </div>
 
