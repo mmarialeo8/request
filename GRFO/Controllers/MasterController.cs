@@ -13,6 +13,7 @@ namespace GRFO.Controllers
         private readonly IConfiguration _configuration;
         public MasterController(IConfiguration configuration)
         {
+
             _configuration = configuration;
             CommonMembers.apiBaseUrl = _configuration.GetSection("AppSettings:apiBaseUrl").Value;
         }
