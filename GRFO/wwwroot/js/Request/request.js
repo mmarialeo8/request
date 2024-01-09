@@ -116,15 +116,7 @@ var request_events = function () {
             var basePartNumber = $('#basePartNumber').val();
             var solutionPartNumber = $('#solutionPartNumber').val();
 
-            if (bussinessType == "BtoW") {
-                $('#solutionPartNumber').val(basePartNumber + 'W');
-            }
-            else if (bussinessType == "CPR") {
-                $('#solutionPartNumber').val(basePartNumber + 'R');
-            }
-            else if (bussinessType == "VU") {
-                $('#solutionPartNumber').val(basePartNumber + 'VU');
-            }
+            
             //}
             //else if (bussinessType == "6K") {
             //    if (!solutionPartNumber.match("^6000")) {
