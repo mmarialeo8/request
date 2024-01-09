@@ -119,6 +119,14 @@ var request_events = function () {
             if (bussinessType == "BtoW") {
                 $('#solutionPartNumber').val(basePartNumber + 'W');
             }
+
+            else if (bussinessType == "CPR") {
+                $('#solutionPartNumber').val(basePartNumber + 'R');
+            }
+            else if (bussinessType == "VU") {
+                $('#solutionPartNumber').val(basePartNumber + 'VU');
+            }
+
             //else if (bussinessType == "TKM") {
             //    if (!solutionPartNumber.match("^0247")) {
             //        alert('Invalid Solution part number')
