@@ -116,7 +116,13 @@ var request_events = function () {
             var basePartNumber = $('#basePartNumber').val();
             var solutionPartNumber = $('#solutionPartNumber').val();
 
-            
+            if (bussinessType == "BtoW") {
+                $('#solutionPartNumber').val(basePartNumber + 'W');
+            }
+            //else if (bussinessType == "TKM") {
+            //    if (!solutionPartNumber.match("^0247")) {
+            //        alert('Invalid Solution part number')
+            //    }
             //}
             //else if (bussinessType == "6K") {
             //    if (!solutionPartNumber.match("^6000")) {
@@ -132,20 +138,16 @@ var request_events = function () {
             var bussinessType = $("#businessTypeId option:selected").text();
             var solutionPartNumber = $('#solutionPartNumber').val();
 
-        if (bussinessType == "TKM") {
-            if ($.trim(solutionPartNumber).length > 0) {
+            if (bussinessType == "TKM") {
                 if (!solutionPartNumber.match("^0247")) {
                     alert('Invalid Solution part number')
                 }
             }
-        }
-        else if (bussinessType == "6K") {
-            if ($.trim(solutionPartNumber).length > 0) {
+            else if (bussinessType == "6K") {
                 if (!solutionPartNumber.match("^6000")) {
                     alert('Invalid Solution part number')
                 }
             }
-        }
 
 
         },
