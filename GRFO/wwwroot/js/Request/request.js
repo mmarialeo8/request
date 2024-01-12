@@ -90,7 +90,6 @@ var request_events = function () {
                 }
             });
         },
-
         onBasePartNumberChange = function (e) {
             $.ajax({
                 url: '/request/load-hadoop-data',
@@ -109,7 +108,6 @@ var request_events = function () {
                 }
             });
         },
-
         editRequest = function (requestId) {
             $.ajax({
                 url: '/request/edit',
@@ -155,7 +153,6 @@ var request_events = function () {
                 }
             });
         },
-
         viewRequest = function (requestId) {
             $.ajax({
                 url: '/request/view',
