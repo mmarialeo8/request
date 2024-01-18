@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using GJCommon.Common;
-using GJCommon.Models;
 using GRFOCommon.Models;
 using System.Data;
 using System.Data.SqlClient;

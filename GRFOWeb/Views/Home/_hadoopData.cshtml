@@ -1,0 +1,83 @@
+﻿@model hadoopDataModels
+
+<!-- Show the cropped image in modal -->
+<div class="">
+
+    <div class="row">
+
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="partDescription" class="col-form-label-sm">Part Description:</label>
+                <div class="input-group">
+                    <input asp-for="partDescription" type="text" class="form-control form-control-sm"
+                           placeholder="Part Description" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="stdCostBasePart" class="col-form-label-sm">STD Cost Base Part:</label>
+                <div class="input-group">
+                    <input asp-for="stdCostBasePart" type="text" class="form-control form-control-sm"
+                           placeholder="STD Cost Base Part" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="annualRepairForecast" class="col-form-label-sm">Annual Repair Forecast:</label>
+                <div class="input-group">
+                    <input asp-for="annualRepairForecast" type="text" class="form-control form-control-sm"
+                           placeholder="Annual Repair Forecast" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="extendedSpendPotential" class="col-form-label-sm">Extended Spend Potential:</label>
+                <div class="input-group">
+                    <input asp-for="extendedSpendPotential" type="text" class="form-control form-control-sm"
+                           placeholder="Extended Spend Potential" required="required">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="t1CustomerQty" class="col-form-label-sm">T1 Customer Qty:</label>
+                <div class="input-group">
+                    <input asp-for="t1CustomerQty" type="text" class="form-control form-control-sm"
+                           placeholder="T1 Customer Qty" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="t2CustomerQty" class="col-form-label-sm">T2 Customer Qty:</label>
+                <div class="input-group">
+                    <input asp-for="t2CustomerQty" type="text" class="form-control form-control-sm"
+                           placeholder="T2 Customer Qty" required="required">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="mg3" class="col-form-label-sm">MG3:</label>
+                <div class="input-group">
+                    <input asp-for="mg3" type="text" class="form-control form-control-sm"
+                           placeholder="MG3" required="required">
+                </div>
+            </div>
+        </div>              
+
+    </div>
+
+</div>

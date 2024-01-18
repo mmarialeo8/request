@@ -135,7 +135,10 @@ function BindCustomerLocation(customerLocationControl, customerLocationId) {
 }
 
 function formValidate(formControl) {
-    return validator.checkAll($(formControl))
+
+    return $(formControl).valid();
+
+    // return validator.checkAll($(formControl))
 }
 
 function getTodayDate() {

@@ -1,6 +1,4 @@
 using GJCommon.Common;
-using GJCommon.Models;
-using GJSamp.Models;
 using GRFOCommon.Common;
 using GRFOCommon.Models;
 using Microsoft.AspNetCore.Mvc;

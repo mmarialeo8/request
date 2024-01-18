@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GJCommon.Common
+namespace GRFOCommon.Common
 {
     public class apiRoute
     {

@@ -1,4 +1,4 @@
-namespace GJSamp.Models
+namespace GRFOCommon.Models
 {
     public class ErrorViewModel
     {
