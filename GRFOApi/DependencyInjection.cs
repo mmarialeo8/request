@@ -7,6 +7,7 @@ namespace GJApi
     {
         public static void Bind(IServiceCollection services)
         {
+            services.AddSingleton<IDashboardData, DashboardDataRepository>();
             services.AddSingleton<IRequest, RequestRepository>();
             services.AddSingleton<IMasterData, MasterDataRepository>();
             services.AddSingleton<IhadoopData, HadoopDataRepository>();

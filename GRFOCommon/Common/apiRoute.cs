@@ -8,6 +8,10 @@ namespace GRFOCommon.Common
 {
     public class apiRoute
     {
+        public class dashboard
+        {
+            public const string get = "/dashboard/get";
+        }
         public class request
         {
             public const string get = "/request/get";

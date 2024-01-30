@@ -6,52 +6,40 @@ using System.Data.SqlClient;
 
 namespace GJApi.Data
 {
-    public interface IhadoopData
+    public interface IDashboardData
     {
-        Task<hadoopDataResponse> GetHadoopDataList(string basePartNumber);
+        Task<DashboardResult> GetDashboardData(string dateFrom, string dateTo);
     }
-    public class HadoopDataRepository : IhadoopData
+    public class DashboardDataRepository : IDashboardData
     {
         private readonly IConfiguration _iConfiguration;
         private readonly string sConnectionString;
-        public HadoopDataRepository(IConfiguration _iConfiguration)
+        public DashboardDataRepository(IConfiguration _iConfiguration)
         {
             this._iConfiguration = _iConfiguration;
             this.sConnectionString = _iConfiguration.GetSection("ConnectionStrings:sConnectionString").Value;
         }
 
-        public async Task<hadoopDataResponse> GetHadoopDataList(string basePartNumber)
+        public async Task<DashboardResult> GetDashboardData(string dateFrom, string dateTo)
         {
-            var result = new hadoopDataResponse();
+            var result = new DashboardResult();
             using (IDbConnection _db = new SqlConnection(sConnectionString))
             {
                 try
                 {
-
-                    var query = @"select
-		                basePartId	
-		                ,basePartNumber	
-		                ,partDescription	
-		                ,stdCostBasePart	
-		                ,annualRepairForecast	
-		                ,extendedSpendPotential	
-		                ,t1CustomerQty	
-		                ,t2CustomerQty	
-		                ,mg3
-	                from [dbo].[hadoopData]
-	                where basePartNumber=@basePartNumber";
-
-                    var res = (await _db.QueryAsync<hadoopDataModels>
-                        (sql: query,
+                    
+                    var res = (await _db.QueryAsync<DashboardModels>
+                        (sql: StoreProcedure.Dashboard.SelectAll,
                         new
                         {
-                            basePartNumber = basePartNumber
+                            //dateFrom = dateFrom,
+                            //dateTo = dateTo
                         },
-                        commandType: CommandType.Text)).FirstOrDefault();
+                        commandType: CommandType.Text)).AsList();
                     if (res != null)
                     {
                         result.isTransactionDone = true;
-                        result.hadoop = res;
+                        result.dashboard = res;
                     }
                     else
                     {
