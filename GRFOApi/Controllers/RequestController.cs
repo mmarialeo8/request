@@ -4,7 +4,7 @@ using GRFOCommon.Common;
 using GRFOCommon.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+// using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GJApi.Controllers
 {
