@@ -134,6 +134,31 @@ function BindCustomerLocation(customerLocationControl, customerLocationId) {
     });
 }
 
+function BindBuName(buNameControl, buNameId) {
+    $.ajax({
+        url: '/master/master-data',
+        type: "GET",
+        dataType: 'json',
+        data: {
+            tableName: '[dbo].[BUNames]',
+            columnIdName: 'BUNameId',
+            columnValueName: 'BUName'
+        },
+        success: function (result) {
+            if (result.isTransactionDone) {
+                BindDropdown(result.data, buNameControl, 'columnId', 'columnValue', ' BU Name', buNameId)
+            }
+            else {
+                alert(result.transactionMessage)
+            }
+        },
+        error: function (xhr, status) {
+            showToasterMessage(status);
+        }
+    });
+}
+
+
 //function formValidate(formControl) {
 //    return validator.checkAll($(formControl))
 //}

@@ -79,6 +79,8 @@ var request_events = function () {
 
                     BindCustomerLocation('#customerLocationId', $('#hdfcustomerLocationId').val());
 
+                    BindBuName('#buNameId', $('#hdfcustomerLocationId').val());
+
 
                     //$('#frmRequestDetails')
                     //    .on('blur', 'input[required], input.optional, select.required', validator.checkField)
@@ -183,6 +185,8 @@ var request_events = function () {
 
                     BindCustomerLocation('#customerLocationId', $('#hdfcustomerLocationId').val());
 
+                    BindBuName('#buNameId', $('#hdfcustomerLocationId').val());
+
 
                     $('[data-mask]').inputmask();
 
@@ -230,6 +234,8 @@ var request_events = function () {
                     BindRepairLocation('#repairLocationId', $('#hdfrepairLocationId').val());
 
                     BindCustomerLocation('#customerLocationId', $('#hdfcustomerLocationId').val());
+
+                    BindBuName('#buNameId', $('#hdfcustomerLocationId').val());
 
                     $('#prdDate').datetimepicker({
                         format: 'DD/MM/YYYY'
@@ -357,10 +363,10 @@ var request_events = function () {
                     $(element).removeClass('is-invalid');
                 }
             });
-            
+
             if ($("#frmRequestDetails").valid()) {
                 $.ajax({
-                    url: '/request/save1',
+                    url: '/request/save',
                     type: 'POST',
                     dataType: 'json',
                     data: { data: data },
@@ -372,7 +378,7 @@ var request_events = function () {
                         }
                     },
                     error: function (xhr, status) {
-                        showMessageStatus(status);                        
+                        showMessageStatus(status);
                     }
                 });
             }
@@ -386,23 +392,51 @@ var request_events = function () {
                 prdImplementation: $("#prdImplementation").prop("checked"),
                 prdDate: $("#prdDate").val(),
             }
-            if (formValidate("#frmRequestDetails")) {
+
+            $("#frmRequestDetails").validate({
+                rules: {
+                    screeningStatus: "required",
+                    businessCaseStatus: "required",
+                    pilotReviewStatus: "required",
+                    prdImplementation: "required",
+                    prdDate: "required"
+                },
+                messages: {
+                    screeningStatus: "Request category is required",
+                    businessCaseStatus: "Business type is required",
+                    pilotReviewStatus: "Request source is required",
+                    prdImplementation: "Exective name is required",
+                    prdDate: "CC Number is required",
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+
+
+            if ($("#frmRequestDetails").valid()) {
                 $.ajax({
                     url: '/request/update',
                     type: 'POST',
                     dataType: 'json',
                     data: { data: data },
                     success: function (result) {
-                        alert(result.transactionMessage)
+                        showMessageStatus(result.transactionMessage);
                         if (result.isTransactionDone) {
                             $('#staticBackdrop').modal('hide');
                             loadRequest();
                         }
                     },
                     error: function (xhr, status) {
-                        alert(result.transactionMessage)
-                        //showToasterMessage(result.data.transactionMessage);
-                        //showToasterMessage(status);
+                        alert(result.transactionMessage)                        
                     }
                 });
             }

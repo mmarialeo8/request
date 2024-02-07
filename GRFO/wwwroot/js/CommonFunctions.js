@@ -134,6 +134,7 @@ function BindCustomerLocation(customerLocationControl, customerLocationId) {
     });
 }
 
+
 function formValidate(formControl) {
 
     return $(formControl).valid();

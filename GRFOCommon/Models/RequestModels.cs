@@ -37,6 +37,7 @@ namespace GRFOCommon.Models
         public virtual int repairLocationId { get; set; }
         public virtual string targetCustomer { get; set; }
         public virtual int customerLocationId { get; set; }
+        public virtual int hdfbuNameId { get; set; }        
         public virtual double annualRepairForecast1 { get; set; }
         public virtual double annualRepairForecast2 { get; set; }
         public virtual double stdCostBasePart { get; set; }
@@ -88,6 +89,7 @@ namespace GRFOCommon.Models
         public virtual double t1CustomerQty { get; set; }
         public virtual double t2CustomerQty { get; set; }
         public virtual double mg3 { get; set; }
+        public virtual string enabledDisabledStatus { get; set; }
     }
 
     public class hadoopDataResponse : TransactionWrapper

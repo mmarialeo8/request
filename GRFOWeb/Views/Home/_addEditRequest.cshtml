@@ -23,6 +23,7 @@
                                 <input type="hidden" id="hdfbusinessTypeId" value="@Model.businessTypeId" />
                                 <input type="hidden" id="hdfrequestSourceId" value="@Model.requestSourceId" />
                                 <input type="hidden" id="hdfcustomerLocationId" value="@Model.customerLocationId" />
+                                <input type="hidden" id="hdfbuNameId" value="@Model.hdfbuNameId" />
                                 <input type="hidden" id="hdfrepairLocationId" value="@Model.repairLocationId" />
 
                                 <div class="card card-primary">
@@ -252,21 +253,21 @@
                                             @if (Model.requestId > 0)
                                             {
                                                 await Html.RenderPartialAsync("_hadoopData", new hadoopDataModels
-                {
-                    partDescription = Model.partDescription,
-                    annualRepairForecast = Model.annualRepairForecast,
-                    stdCostBasePart = Model.stdCostBasePart,
-                    extendedSpendPotential = Model.extendedSpendPotential,
-                    t1CustomerQty = Model.t1CustomerQty,
-                    t2CustomerQty = Model.t2CustomerQty,
-                    mg3 = Model.mg3
-                });
+                                                {
+                                                    partDescription = Model.partDescription,
+                                                    annualRepairForecast = Model.annualRepairForecast,
+                                                    stdCostBasePart = Model.stdCostBasePart,
+                                                    extendedSpendPotential = Model.extendedSpendPotential,
+                                                    t1CustomerQty = Model.t1CustomerQty,
+                                                    t2CustomerQty = Model.t2CustomerQty,
+                                                    mg3 = Model.mg3
+                                                });
                                             }
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="card card-primary">
+                                <div class="card card-primary d-none">
                                     <div class="card-header">
                                         <h3 class="card-title">Status </h3>
                                     </div>
@@ -329,264 +330,10 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                @*   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button> *@
-
+            <div class="modal-footer">               
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-primary" onclick="request_events.saveRequest()">Save</a>
             </div>
         </div>
     </div>
 </div>
-
-@*
-<!-- Show the cropped image in modal -->
-<div class="modal fade docs-cropped" id="staticBackdrop" aria-hidden="true" role="dialog" tabindex="-1">
-    <div class="modal-dialog">
-        <form id="frmRequestDetails" class="form-horizontal form-label-left" novalidate>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Add/Edit Request</h4>
-                </div>
-                <div class="modal-body">
-
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel border-blue">
-                                <div class="x_title">
-                                    <h5>Request Details</h5>
-                                    <div class="clearfix border-blue"></div>
-                                </div>
-                                <div class="x_content">
-
-                                    <input type="hidden" asp-for="requestId" />
-                                    <input type="hidden" id="hdfrequestCategoryId" value="@Model.requestCategoryId" />
-                                    <input type="hidden" id="hdfbusinessTypeId" value="@Model.businessTypeId" />
-                                    <input type="hidden" id="hdfrequestSourceId" value="@Model.requestSourceId" />
-                                    <input type="hidden" id="hdfcustomerLocationId" value="@Model.customerLocationId" />
-                                    <input type="hidden" id="hdfrepairLocationId" value="@Model.repairLocationId" />
-
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="requestCategoryId" class="form-control" placeholder="Request Category" required="required">
-                                                <option value="0">Request Category</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="businessTypeId" class="form-control" placeholder="Business Type" required="required" onchange="request_events.onBussinessTypeChange(this);">
-                                                <option value="">Business Type</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="requestSourceId" class="form-control" placeholder="Request Source" required="required" onchange="request_events.requestSourceChange()">
-                                                <option value="">Request Source</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group" id="divExectiveName" style="display:none">
-                                            <input asp-for="exectiveName" type="text"
-                                                   class="form-control has-feedback-left"
-                                                   placeholder="Exective Name" required="required">
-                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group" id="divCCNumber" style="display:none">
-                                            <input asp-for="ccNumber" type="text"
-                                                   class="form-control has-feedback-left"
-                                                   placeholder="CC Number" required="required">
-                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group" id="divGRFOComment" style="display:none">
-                                            <input asp-for="grfoComment" type="text"
-                                                   class="form-control has-feedback-left"
-                                                   placeholder="GRFO Comment" required="required">
-                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="requestorProjectGroup" type="text"
-                                                   class="form-control has-feedback-left"
-                                                   placeholder="Requestor Project Group" required="required">
-                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="requestor" type="text" class="form-control has-feedback-left" placeholder="Requestor" required="required">
-                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="basePartNumber" type="text" class="form-control has-feedback-left"
-                                                   placeholder="Base Part Number"
-                                                   required="required"
-                                                   onchange="request_events.onBasePartNumberChange(this);">
-                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="solutionPartNumber" type="text" class="form-control has-feedback-left" placeholder="Solution Part Number"
-                                                   required="required" onchange="request_events.onSolutionPartNumberChange()">
-                                            <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="needByDate" type="text" class="form-control has-feedback-left" placeholder="Need By Date" required="required">
-                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="buNameId" class="form-control" placeholder="First Name" required="required">
-                                                <option value="">BU Name</option>
-                                                <option value="1">test</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="repairLocationId" class="form-control" placeholder="Repair Site" required="required">
-                                                <option value="">Repair Site</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="targetCustomer" type="text" class="form-control has-feedback-left" placeholder="Target Customer"
-                                                   required="required">
-                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <select asp-for="customerLocationId" class="form-control" placeholder="Repair Site" required="required">
-                                                <option value="">Customer Location</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="annualRepairForecast1" type="text" class="form-control has-feedback-left"
-                                                   placeholder="Annual Repair Forecast (Y1)"
-                                                   required="required">
-                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="annualRepairForecast2" type="text" class="form-control has-feedback-left"
-                                                   placeholder="Annual Repair Forecast (Y2)" required="required">
-                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input asp-for="comments" type="text" class="form-control has-feedback-left" placeholder="Comments"
-                                                   required="required">
-                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel border-blue">
-                                <div class="x_title">
-                                    <h5>Base Part Details <i class="fa fa-refresh" onclick="request_events.onBasePartNumberChange()"></i></h5>
-                                    <div class="clearfix border-blue"></div>
-                                </div>
-                                <div class="x_content">
-                                    <div id="divBasePartNumber">
-                                        @if (Model.requestId > 0)
-                                        {
-                                            await Html.RenderPartialAsync("_hadoopData", new hadoopDataModels
-                {
-                    partDescription = Model.partDescription,
-                    annualRepairForecast = Model.annualRepairForecast,
-                    stdCostBasePart = Model.stdCostBasePart,
-                    extendedSpendPotential = Model.extendedSpendPotential,
-                    t1CustomerQty = Model.t1CustomerQty,
-                    t2CustomerQty = Model.t2CustomerQty,
-                    mg3 = Model.mg3
-                });
-                                        }
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel border-blue">
-                                <div class="x_title">
-                                    <h5>Status</h5>
-                                    <div class="clearfix border-blue"></div>
-                                </div>
-                                <div class="x_content">
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            Screening Status:
-                                            <label>
-                                                @Model.screeningStatus
-                                            </label>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-
-                                            Business Case Status:
-                                            <label>
-                                                @Model.businessCaseStatus
-                                            </label>
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-
-                                            Pilot Review Status:
-                                            <label>
-                                                @Model.pilotReviewStatus
-                                            </label>
-                                        </div>
-
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group checkbox">
-                                            <label>
-                                                <input type="checkbox" class="flat"> Pilot Execution
-                                            </label>
-                                        </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
-                                            <input type="text" class="form-control has-feedback-left" asp-for="prdDate"
-                                                   placeholder="Pilot Execution Date" required="required">
-                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" onclick="request_events.saveRequest()">Save</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<!-- /.modal -->
- *@
