@@ -9,16 +9,16 @@ namespace GRFOApi.Controllers
     [ApiController]
     public class HadoopController : ControllerBase
     {
-        private readonly IhadoopData _ihadoopData;
-        public HadoopController(IhadoopData _ihadoopData)
+        private readonly IAPVDataData _iAPVDataData;
+        public HadoopController(IAPVDataData _iAPVDataData)
         {
-            this._ihadoopData = _ihadoopData;
+            this._iAPVDataData = _iAPVDataData;
         }
 
-        [HttpGet(apiRoute.hadoop.get)]
+        [HttpGet(apiRoute.apvData.get)]
         public async Task<JsonResult> Get(string basePartNumber)
         {
-            return new JsonResult(await _ihadoopData.GetHadoopDataList(basePartNumber));
+            return new JsonResult(await _iAPVDataData.GetApvDatList(basePartNumber));
         }
 
     }

@@ -252,19 +252,19 @@
                                         <div id="divBasePartNumber">
                                             @if (Model.requestId > 0)
                                             {
-                                                await Html.RenderPartialAsync("_hadoopData", new hadoopDataModels
-                                                {
-                                                    partDescription = Model.partDescription,
-                                                    annualRepairForecast = Model.annualRepairForecast,
-                                                    stdCostBasePart = Model.stdCostBasePart,
-                                                    extendedSpendPotential = Model.extendedSpendPotential,
-                                                    t1CustomerQty = Model.t1CustomerQty,
-                                                    t2CustomerQty = Model.t2CustomerQty,
-                                                    mg3 = Model.mg3,
+                                                await Html.RenderPartialAsync("_hadoopData", new APVDataModels
+                {
+                    partDescription = Model.partDescription,
+                    annualRepairForecast = Model.annualRepairForecast,
+                    stdCostBasePart = Model.stdCostBasePart,
+                    extendedSpendPotential = Model.extendedSpendPotential,
+                    t1CustomerQty = Model.t1CustomerQty,
+                    t2CustomerQty = Model.t2CustomerQty,
+                    mg3 = Model.mg3,
+                    pbg = Model.pbg,
+                                            enabledDisabledStatus = "-"
 
-                                                    enabledDisabledStatus = "-"
-
-                                                });
+                });
                                             }
                                         </div>
                                     </div>
@@ -317,9 +317,6 @@
                                                                data-inputmask-inputformat="dd/mm/yyyy"
                                                                data-mask>
 
-                                                        @* <select asp-for="prdDate" class="form-control form-control-sm" placeholder="Pilot Execution Date">
-                                                        <option value="">Customer Location</option>
-                                                        </select> *@
                                                     </div>
                                                 </div>
 

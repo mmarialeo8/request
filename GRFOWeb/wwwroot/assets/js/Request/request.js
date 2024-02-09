@@ -43,10 +43,10 @@ var request_events = function () {
                     'data': 'requestId',
                     'className': 'dt-body-center',
                     'render': function (data, type, JsonResultRow, meta) {
-                        return "<a href='javascript:void(0);' class='text-warning' onclick='request_events.editRequest(" + JsonResultRow.requestId + ")' title='Click here to edit record'><i class='fa fa-pen'></i></a>" +
+                        return "<a href='javascript:void(0);' class='text-warning' onclick='request_events.editRequest(" + JsonResultRow.requestId + ")' title='Click here to edit record'><i class='fa fa-pen'></i></a> " +
                             //"<a href='javascript:void(0);' class='text-danger' onclick='request_events.deleteRequest(" + JsonResultRow.requestId + ")' title='Click here to delete record'><i class='fa fa-trash'></i></a>" +
-                            "<a href='javascript:void(0);' class='text-info' onclick='request_events.viewRequest(" + JsonResultRow.requestId + ")' title='Click here to update status'><i class='fa fa-eye'></i></a>" +
-                            "<a href='javascript:void(0);' class='text-secondary' onclick='request_events.viewRequest(" + JsonResultRow.requestId + ")' title='Click here to update status'><i class='fa fa-info-circle'></i></a>"
+                            "<a href='javascript:void(0);' class='text-info' onclick='request_events.viewRequest(" + JsonResultRow.requestId + ")' title='Click here to update status'><i class='fa fa-eye'></i></a>"
+                            //+ "<a href='javascript:void(0);' class='text-secondary' onclick='request_events.viewRequest(" + JsonResultRow.requestId + ")' title='Click here to update status'><i class='fa fa-info-circle'></i></a>"
                     }
                 }
             ],
@@ -187,24 +187,7 @@ var request_events = function () {
 
                     BindBuName('#buNameId', $('#hdfcustomerLocationId').val());
 
-
-                    $('[data-mask]').inputmask();
-
-                    //$('#needByDate').datetimepicker({
-                    //    format: 'DD/MM/YYYY'
-                    //});
-
-                    //$('#prdDate').datetimepicker({
-                    //    format: 'DD/MM/YYYY'
-                    //});
-
-                    //$('#frmRequestDetails')
-                    //    .on('blur', 'input[required], input.optional, select.required', validator.checkField)
-                    //    .on('change', 'select.required', validator.checkField)
-                    //    .on('keypress', 'input[required][pattern]', validator.keypress);
-
-                    // requestSourceChange();
-
+                    $('[data-mask]').inputmask();                   
                 },
                 error: function (xhr, status) {
                     alert(status);
@@ -294,6 +277,7 @@ var request_events = function () {
                 mg3: $("#mg3").val(),
                 prdImplementation: $("#prdImplementation").prop("checked"),
                 prdDate: $("#prdDate").val(),
+                pbg: $("#pbg").val(),
             }
 
             $("#frmRequestDetails").validate({

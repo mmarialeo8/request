@@ -43,9 +43,40 @@ namespace GRFOWeb.Controllers
         [HttpGet("/request/load-hadoop-data")]
         public async Task<IActionResult> LoadHadoop(string basePartNumber)
         {
-            var authResult = ApiCall.GetAsync(CommonMembers.apiBaseUrl, apiRoute.hadoop.get + "?basePartNumber=" + basePartNumber, null);
-            hadoopDataResponse objData = JsonConvert.DeserializeObject<hadoopDataResponse>(authResult);
-            return PartialView("_hadoopData", objData.hadoop);
+            var authResult = ApiCall.GetAsync(CommonMembers.apiBaseUrl, apiRoute.apvData.get + "?basePartNumber=" + basePartNumber, null);
+            APVDataResponse objData = JsonConvert.DeserializeObject<APVDataResponse>(authResult);
+
+            if (objData.isTransactionDone)
+            {
+                if (objData.locationPart != null)
+                {
+                    string customerIds = string.Join(",", objData.locationPart.Distinct().Select(x => x.shiptocust.ToString()).ToArray());
+                    if (!string.IsNullOrEmpty(customerIds))
+                    {
+                        var customerResult = ApiCall.GetAsync(CommonMembers.apiBaseUrl, apiRoute.customer.getcustomerlist + "?customerIds=" + customerIds, null);
+                        customerResult objCustomerList = JsonConvert.DeserializeObject<customerResult>(customerResult);
+
+                        if (objCustomerList.isTransactionDone)
+                        {
+                            if (objCustomerList.customers != null)
+                            {
+                                foreach (var item in objCustomerList.customers)
+                                {
+                                    (from k in objData.locationPart
+                                     where k.shiptocust == item.customerName
+                                     select k).ToList().ForEach(k => k.T1T2Category = item.customerType);
+                                }
+                                objData.APVData.t1CustomerQty = objData.locationPart.Where(x => x.T1T2Category == "T1" || x.T1T2Category == "t1").Sum(m => m.dh_qty);
+                                objData.APVData.t2CustomerQty = objData.locationPart.Where(x => x.T1T2Category == "T2" || x.T1T2Category == "t2").Sum(m => m.dh_qty);                                
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+            return PartialView("_hadoopData", objData.APVData);
         }
 
         [HttpGet("/request/edit")]

@@ -10,8 +10,15 @@ namespace GJApi
             services.AddSingleton<IDashboardData, DashboardDataRepository>();
             services.AddSingleton<IRequest, RequestRepository>();
             services.AddSingleton<IMasterData, MasterDataRepository>();
-            services.AddSingleton<IhadoopData, HadoopDataRepository>();
+
+
+            #region APV Data
             
+            services.AddSingleton<IAPVDataData, APVDataRepository>();
+
+            #endregion
+
+
         }
     }
 }

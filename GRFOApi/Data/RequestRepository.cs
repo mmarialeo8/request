@@ -13,7 +13,10 @@ namespace GJApi.Data
         Task<TransactionWrapper> SaveRequest(RequestPostModels data);
         Task<TransactionWrapper> UpdateRequest(RequestUpdateModels data);
         Task<requestReportResult> ReportData();
-        
+
+
+        Task<customerResult> GetCustomerList(string customerIds);
+
     }
     public class RequestRepository : IRequest
     {
@@ -126,6 +129,7 @@ namespace GJApi.Data
                             T1CustomerQty = data.t1CustomerQty,
                             T2CustomerQty = data.t2CustomerQty,
                             MG3 = data.mg3,
+                            pbg = data.pbg,
                             Comments = data.comments,
                             ScreeningStatus = data.screeningStatus,
                             BusinessCaseStatus = data.businessCaseStatus,
@@ -156,7 +160,7 @@ namespace GJApi.Data
             }
             return result;
         }
-       
+
         public async Task<TransactionWrapper> UpdateRequest(RequestUpdateModels data)
         {
             var result = new TransactionWrapper();
@@ -168,12 +172,12 @@ namespace GJApi.Data
                         (sql: StoreProcedure.Request.Update,
                         new
                         {
-                            RequestId = data.requestId,                           
+                            RequestId = data.requestId,
                             ScreeningStatus = data.screeningStatus,
                             BusinessCaseStatus = data.businessCaseStatus,
                             PilotReviewStatus = data.pilotReviewStatus,
                             PrdImplementation = data.prdImplementation,
-                            PrdDate = data.prdDate,                            
+                            PrdDate = data.prdDate,
                         },
                         commandType: CommandType.StoredProcedure)).FirstOrDefault();
                     if (res != null)
@@ -195,7 +199,7 @@ namespace GJApi.Data
             }
             return result;
         }
-        
+
         public async Task<requestReportResult> ReportData()
         {
             var result = new requestReportResult();
@@ -207,13 +211,47 @@ namespace GJApi.Data
                         (sql: StoreProcedure.Request.ReportData,
                         new
                         {
-                            
+
                         },
                         commandType: CommandType.StoredProcedure)).AsList();
                     if (res != null)
                     {
                         result.isTransactionDone = true;
                         result.report = res;
+                    }
+                    else
+                    {
+                        result.isTransactionDone = false;
+                        result.transactionMessage = "No Records Found";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result.isTransactionDone = false;
+                    result.transactionMessage = ex.ToString();
+                }
+            }
+            return result;
+        }
+
+        public async Task<customerResult> GetCustomerList(string customerIds)
+        {
+            var result = new customerResult();
+            using (IDbConnection _db = new SqlConnection(sConnectionString))
+            {
+                try
+                {
+                    var res = (await _db.QueryAsync<customerModels>
+                        (sql: StoreProcedure.Request.customerSelect,
+                        new
+                        {
+                            @customerIds = customerIds
+                        },
+                        commandType: CommandType.StoredProcedure)).AsList();
+                    if (res != null)
+                    {
+                        result.isTransactionDone = true;
+                        result.customers = res;
                     }
                     else
                     {

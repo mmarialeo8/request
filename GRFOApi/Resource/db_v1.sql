@@ -1,6 +1,35 @@
-USE [GRFO_V1]
+CREATE FUNCTION [dbo].[GRFOSplit]  
+(  
+ @RowData nvarchar(2000),  
+ @SplitOn nvarchar(5)  
+)    
+RETURNS @RtnValue table   
+(  
+ Id int identity(1,1),  
+ Data nvarchar(100)  
+)   
+AS    
+BEGIN   
+ Declare @Cnt int  
+ Set @Cnt = 1  
+  
+ While (Charindex(@SplitOn,@RowData)>0)  
+ Begin  
+  Insert Into @RtnValue (data)  
+  Select   
+   Data = ltrim(rtrim(Substring(@RowData,1,Charindex(@SplitOn,@RowData)-1)))  
+  
+  Set @RowData = Substring(@RowData,Charindex(@SplitOn,@RowData)+1,len(@RowData))  
+  Set @Cnt = @Cnt + 1  
+ End  
+   
+ Insert Into @RtnValue (data)  
+ Select Data = ltrim(rtrim(@RowData))  
+  
+ Return  
+END  
 GO
-/****** Object:  Table [dbo].[BUNames]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[BUNames]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -14,7 +43,7 @@ CREATE TABLE [dbo].[BUNames](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[BusinessType]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[BusinessType]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -29,7 +58,7 @@ CREATE TABLE [dbo].[BusinessType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CustomerLocations]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[CustomerLocations]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -43,7 +72,7 @@ CREATE TABLE [dbo].[CustomerLocations](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[hadoopData]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[hadoopData]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -64,7 +93,22 @@ CREATE TABLE [dbo].[hadoopData](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RepairCategory]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[Part_Dim]    Script Date: 09/02/2024 6:23:25 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Part_Dim](
+	[Part_ID] [uniqueidentifier] NULL,
+	[material] [nchar](50) NULL,
+	[material_desc] [nchar](1000) NULL,
+	[mg3] [nchar](256) NULL,
+	[pbg] [nchar](256) NULL,
+	[cost] [float] NULL,
+	[gfcst] [float] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RepairCategory]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -78,7 +122,7 @@ CREATE TABLE [dbo].[RepairCategory](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RepairLocation]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[RepairLocation]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -92,7 +136,7 @@ CREATE TABLE [dbo].[RepairLocation](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RequestMaster]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[RequestMaster]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -117,6 +161,7 @@ CREATE TABLE [dbo].[RequestMaster](
 	[STDCostBasePart] [numeric](18, 0) NOT NULL,
 	[AnnualRepairForecast] [numeric](18, 0) NOT NULL,
 	[ExtendedSpendPotential] [numeric](18, 0) NOT NULL,
+	[pbg] [nvarchar](20) NULL,
 	[T1CustomerQty] [numeric](18, 0) NOT NULL,
 	[T2CustomerQty] [numeric](18, 0) NOT NULL,
 	[MG3] [bit] NOT NULL,
@@ -125,7 +170,7 @@ CREATE TABLE [dbo].[RequestMaster](
 	[BusinessCaseStatus] [nvarchar](10) NULL,
 	[PilotReviewStatus] [nvarchar](10) NULL,
 	[PrdImplementation] [bit] NOT NULL,
-	[PrdDate] [datetime] NOT NULL,
+	[PrdDate] [datetime] NULL,
 	[ExectiveName] [nvarchar](100) NULL,
 	[GRFOComment] [nvarchar](1000) NULL,
 	[CCNumber] [nvarchar](10) NULL,
@@ -135,7 +180,7 @@ CREATE TABLE [dbo].[RequestMaster](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RequestorSource]    Script Date: 07/02/2024 7:27:05 PM ******/
+/****** Object:  Table [dbo].[RequestorSource]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -146,6 +191,21 @@ CREATE TABLE [dbo].[RequestorSource](
  CONSTRAINT [PK_RequestorSource] PRIMARY KEY CLUSTERED 
 (
 	[RequestorSourceId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[T1T2]    Script Date: 09/02/2024 6:23:25 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[T1T2](
+	[CustomerId] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerName] [nvarchar](200) NOT NULL,
+	[CustomerType] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_T1T2] PRIMARY KEY CLUSTERED 
+(
+	[CustomerId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -327,21 +387,23 @@ SET IDENTITY_INSERT [dbo].[RepairLocation] OFF
 GO
 SET IDENTITY_INSERT [dbo].[RequestMaster] ON 
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (7, 1, 1, 3, N'string', N'string', N'string', N'string', N'string', CAST(N'1993-11-03T00:00:00.000' AS DateTime), 3, 1, N'string', 3, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'string', NULL, NULL, NULL, 0, CAST(N'1993-11-03T00:00:00.000' AS DateTime), NULL, NULL, N'ASDADAD')
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (7, 1, 1, 3, N'string', N'string', N'string', N'string', N'string', CAST(N'1993-11-03T00:00:00.000' AS DateTime), 3, 1, N'string', 3, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), NULL, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'string', NULL, NULL, NULL, 0, CAST(N'1993-11-03T00:00:00.000' AS DateTime), NULL, NULL, N'ASDADAD')
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (8, 2, 1, 3, N'string', N'string', N'string', N'string', N'string', CAST(N'1993-11-03T00:00:00.000' AS DateTime), 1, 1, N'string', 1, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'string', NULL, NULL, NULL, 0, CAST(N'1993-11-03T00:00:00.000' AS DateTime), NULL, NULL, N'AS')
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (8, 2, 1, 3, N'string', N'string', N'string', N'string', N'string', CAST(N'1993-11-03T00:00:00.000' AS DateTime), 1, 1, N'string', 1, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), NULL, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'string', NULL, NULL, NULL, 0, CAST(N'1993-11-03T00:00:00.000' AS DateTime), NULL, NULL, N'AS')
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (9, 1, 1, 3, N'string', N'string', N'string', N'string', N'string', CAST(N'1993-11-03T00:00:00.000' AS DateTime), 1, 1, N'string', 1, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'string', NULL, NULL, NULL, 0, CAST(N'1993-11-03T00:00:00.000' AS DateTime), N'string', N'string', N'123')
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (9, 1, 1, 3, N'string', N'string', N'string', N'string', N'string', CAST(N'1993-11-03T00:00:00.000' AS DateTime), 1, 1, N'string', 1, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), NULL, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'string', NULL, NULL, NULL, 0, CAST(N'1993-11-03T00:00:00.000' AS DateTime), N'string', N'string', N'123')
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (11, 1, 2, 2, N'string', N'string', N'0100-4571', N'sddsf', N'string', CAST(N'1993-03-11T00:00:00.000' AS DateTime), 2, 1, N'string', 2, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(13 AS Numeric(18, 0)), CAST(15 AS Numeric(18, 0)), CAST(17 AS Numeric(18, 0)), CAST(19 AS Numeric(18, 0)), CAST(21 AS Numeric(18, 0)), 1, N'string', N'Accepted', N'Accepted', N'Accepted', 0, CAST(N'1993-03-11T00:00:00.000' AS DateTime), N'123', NULL, NULL)
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (11, 1, 2, 2, N'string', N'string', N'0480-4609', N'sddsf', N'sd', CAST(N'1993-03-11T00:00:00.000' AS DateTime), 2, 1, N'string', 2, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(53 AS Numeric(18, 0)), CAST(51 AS Numeric(18, 0)), CAST(2703 AS Numeric(18, 0)), N'ASDASD', CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 1, N'string', N'Accepted', N'Accepted', N'Accepted', 0, CAST(N'1993-03-11T00:00:00.000' AS DateTime), N'123', NULL, NULL)
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (12, 1, 1, 2, N'asdasd', N'adsasd', N'asdasd', N'sdsdf', N'asdasd', CAST(N'2023-11-29T00:00:00.000' AS DateTime), 1, 1, N'`sfsdf', 1, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'asdasd', NULL, NULL, NULL, 0, CAST(N'2023-12-28T00:00:00.000' AS DateTime), NULL, NULL, NULL)
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (12, 1, 1, 2, N'asdasd', N'adsasd', N'asdasd', N'sdsdf', N'asdasd', CAST(N'2023-11-29T00:00:00.000' AS DateTime), 1, 1, N'`sfsdf', 1, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), NULL, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'asdasd', N'Accepted', N'Accepted', N'Accepted', 0, CAST(N'1999-03-11T00:00:00.000' AS DateTime), NULL, NULL, NULL)
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (13, 1, 1, 2, N'asdsadadd', N'asd', N'1000', N'sdsdf', N'asd', CAST(N'2023-12-05T00:00:00.000' AS DateTime), 2, 2, N'asd', 2, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'asdasd', N'Accepted', N'Accepted', N'Rejected', 0, CAST(N'2023-12-27T00:00:00.000' AS DateTime), NULL, NULL, NULL)
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (13, 1, 1, 2, N'asdsadadd', N'asd', N'1000', N'sdsdf', N'asd', CAST(N'2023-12-05T00:00:00.000' AS DateTime), 2, 2, N'asd', 2, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), NULL, CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 0, N'asdasd', N'Accepted', N'Accepted', N'Rejected', 0, CAST(N'2023-12-27T00:00:00.000' AS DateTime), NULL, NULL, NULL)
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (14, 1, 1, 2, N'GRFO', N'GJ', N'0080-4569', N'sddsf', N'12', CAST(N'2023-12-19T00:00:00.000' AS DateTime), 1, 1, N'Leo', 1, CAST(10 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(11 AS Numeric(18, 0)), CAST(13 AS Numeric(18, 0)), CAST(15 AS Numeric(18, 0)), CAST(17 AS Numeric(18, 0)), CAST(19 AS Numeric(18, 0)), 1, N'leo test', N'Accepted', N'Rejected', N'Rejected', 0, CAST(N'2023-12-19T00:00:00.000' AS DateTime), NULL, NULL, NULL)
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (14, 1, 1, 2, N'GRFO', N'GJ', N'0080-4569', N'sddsf', N'12', CAST(N'2023-12-19T00:00:00.000' AS DateTime), 1, 1, N'Leo', 1, CAST(10 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(11 AS Numeric(18, 0)), CAST(13 AS Numeric(18, 0)), CAST(15 AS Numeric(18, 0)), N'FGH', CAST(17 AS Numeric(18, 0)), CAST(19 AS Numeric(18, 0)), 1, N'leo test', N'Accepted', N'Rejected', N'Rejected', 0, CAST(N'2023-12-19T00:00:00.000' AS DateTime), NULL, NULL, NULL)
 GO
-INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (16, 1, 2, 3, N'adasd', N'ads', N'asd', N'12', N'asd', CAST(N'2024-10-10T00:00:00.000' AS DateTime), 4, 1, N'asd', 1, CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(2 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), 1, N'12', NULL, NULL, NULL, 0, CAST(N'2024-11-11T00:00:00.000' AS DateTime), NULL, NULL, N'asdasd')
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (16, 1, 2, 3, N'adasd', N'ads', N'asd', N'12', N'asd', CAST(N'2024-10-10T00:00:00.000' AS DateTime), 4, 1, N'asd', 1, CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), CAST(2 AS Numeric(18, 0)), NULL, CAST(12 AS Numeric(18, 0)), CAST(12 AS Numeric(18, 0)), 1, N'12', NULL, NULL, NULL, 0, CAST(N'2024-11-11T00:00:00.000' AS DateTime), NULL, NULL, N'asdasd')
+GO
+INSERT [dbo].[RequestMaster] ([RequestId], [RequestCategoryId], [BusinessTypeId], [RequestSourceId], [RequestorProjectGroup], [Requestor], [BasePartNumber], [PartDescription], [SolutionPartNumber], [NeedByDate], [BUNameId], [RepairLocationId], [TargetCustomer], [CustomerLocationId], [AnnualRepairForecast1], [AnnualRepairForecast2], [STDCostBasePart], [AnnualRepairForecast], [ExtendedSpendPotential], [pbg], [T1CustomerQty], [T2CustomerQty], [MG3], [Comments], [ScreeningStatus], [BusinessCaseStatus], [PilotReviewStatus], [PrdImplementation], [PrdDate], [ExectiveName], [GRFOComment], [CCNumber]) VALUES (17, 1, 2, 2, N'ASDA', N'ASD', N'0060-4567', N'sddsf', N'ADSAD', CAST(N'2023-11-29T00:00:00.000' AS DateTime), 2, 3, N'FSDFSDF', 1, CAST(10 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), CAST(11 AS Numeric(18, 0)), CAST(9 AS Numeric(18, 0)), CAST(99 AS Numeric(18, 0)), N'FSDFS', CAST(0 AS Numeric(18, 0)), CAST(0 AS Numeric(18, 0)), 1, N'SDFSDF', NULL, NULL, NULL, 0, NULL, N'ADSADD', NULL, NULL)
 GO
 SET IDENTITY_INSERT [dbo].[RequestMaster] OFF
 GO
@@ -359,7 +421,19 @@ INSERT [dbo].[RequestorSource] ([RequestorSourceId], [RequestorSource]) VALUES (
 GO
 SET IDENTITY_INSERT [dbo].[RequestorSource] OFF
 GO
-/****** Object:  StoredProcedure [dbo].[DashboardData_SelectAll]    Script Date: 07/02/2024 7:27:06 PM ******/
+SET IDENTITY_INSERT [dbo].[T1T2] ON 
+GO
+INSERT [dbo].[T1T2] ([CustomerId], [CustomerName], [CustomerType]) VALUES (1, N'PHLIPS0010', N'T1')
+GO
+INSERT [dbo].[T1T2] ([CustomerId], [CustomerName], [CustomerType]) VALUES (2, N'HP0125', N'T2')
+GO
+INSERT [dbo].[T1T2] ([CustomerId], [CustomerName], [CustomerType]) VALUES (3, N'PHLIPS0020', N'T1')
+GO
+INSERT [dbo].[T1T2] ([CustomerId], [CustomerName], [CustomerType]) VALUES (4, N'HP0325', N'T2')
+GO
+SET IDENTITY_INSERT [dbo].[T1T2] OFF
+GO
+/****** Object:  StoredProcedure [dbo].[DashboardData_SelectAll]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -386,7 +460,32 @@ BEGIN
 	GROUP BY BM.BUNameId, BM.BUName
 END
 GO
-/****** Object:  StoredProcedure [dbo].[hadoop_Data_SelectAll]    Script Date: 07/02/2024 7:27:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetCustomerByIds]    Script Date: 09/02/2024 6:23:25 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetCustomerByIds]
+	-- Add the parameters for the stored procedure here
+	@customerIds nvarchar(160)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	select CustomerId, CustomerName, CustomerType from
+	[dbo].[T1T2] where CustomerName in 
+	(select data from grfosplit(@customerIds,','))
+END
+GO
+/****** Object:  StoredProcedure [dbo].[hadoop_Data_SelectAll]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -416,7 +515,7 @@ BEGIN
 	where basePartNumber=@basePartNumber
 END
 GO
-/****** Object:  StoredProcedure [dbo].[master_Data_Save]    Script Date: 07/02/2024 7:27:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[master_Data_Save]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -483,7 +582,7 @@ BEGIN
 		END		
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Request_Report]    Script Date: 07/02/2024 7:27:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[Request_Report]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -543,7 +642,7 @@ BEGIN
 			LEFT JOIN [dbo].[CustomerLocations] CL ON CL.[CustomerLocationId]=RM.[CustomerLocationId]				
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Request_Save]    Script Date: 07/02/2024 7:27:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[Request_Save]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -572,6 +671,7 @@ CREATE PROCEDURE [dbo].[Request_Save]
 	@T1CustomerQty numeric(18, 0),
 	@T2CustomerQty numeric(18, 0),
 	@MG3 int,
+	@pbg nvarchar(1000),
 	@Comments nvarchar(1000),
 	@ScreeningStatus nvarchar(10),
 	@BusinessCaseStatus nvarchar(10),
@@ -614,6 +714,7 @@ BEGIN
 						,T1CustomerQty
 						,T2CustomerQty
 						,MG3
+						,pbg
 						,Comments
 						,ScreeningStatus
 						,BusinessCaseStatus
@@ -645,6 +746,7 @@ BEGIN
 					,@T1CustomerQty
 					,@T2CustomerQty
 					,@MG3
+					,@pbg
 					,@Comments
 					,@ScreeningStatus
 					,@BusinessCaseStatus
@@ -688,10 +790,8 @@ BEGIN
 						,T1CustomerQty=@T1CustomerQty
 						,T2CustomerQty=@T2CustomerQty
 						,MG3=@MG3
-						,Comments=@Comments
-						--,ScreeningStatus=@ScreeningStatus
-						--,BusinessCaseStatus=@BusinessCaseStatus
-						--,PilotReviewStatus=@PilotReviewStatus
+						,pbg=@pbg
+						,Comments=@Comments						
 						,PrdImplementation=@PrdImplementation
 						,PrdDate=CONVERT(datetime,@PrdDate,103)
 						,ExectiveName=@ExectiveName
@@ -707,7 +807,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Request_SelectAll]    Script Date: 07/02/2024 7:27:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[Request_SelectAll]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -765,6 +865,7 @@ BEGIN
 				,[T1CustomerQty]
 				,[T2CustomerQty]
 				,[MG3]
+				,[pbg]
 				,[Comments]
 				,[ScreeningStatus]
 				,[BusinessCaseStatus]
@@ -779,7 +880,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Request_Status_Update]    Script Date: 07/02/2024 7:27:06 PM ******/
+/****** Object:  StoredProcedure [dbo].[Request_Status_Update]    Script Date: 09/02/2024 6:23:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

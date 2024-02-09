@@ -46,12 +46,13 @@ namespace GRFOCommon.Models
         public virtual double t1CustomerQty { get; set; }
         public virtual double t2CustomerQty { get; set; }
         public virtual double mg3 { get; set; }
+        public virtual string pbg { get; set; }
         public virtual string comments { get; set; }
         public virtual string? screeningStatus { get; set; }
         public virtual string? businessCaseStatus { get; set; }
         public virtual string? pilotReviewStatus { get; set; }
         public virtual bool prdImplementation { get; set; }
-        public virtual string prdDate { get; set; }
+        public virtual string? prdDate { get; set; }
         public virtual string? exectiveName { get; set; }
         public virtual string? grfoComment { get; set; }
         public virtual string? ccNumber { get; set; }
@@ -77,32 +78,6 @@ namespace GRFOCommon.Models
     {
         public List<RequestModels> request { get; set; }
     }
-
-    public class hadoopDataModels
-    {
-        public virtual int basePartId { get; set; }
-        public virtual string basePartNumber { get; set; }
-        public virtual string partDescription { get; set; }
-        public virtual double stdCostBasePart { get; set; }
-        public virtual double annualRepairForecast { get; set; }
-        public virtual double extendedSpendPotential { get; set; }
-        public virtual double t1CustomerQty { get; set; }
-        public virtual double t2CustomerQty { get; set; }
-        public virtual double mg3 { get; set; }
-        public virtual string enabledDisabledStatus { get; set; }
-    }
-
-    public class hadoopDataResponse : TransactionWrapper
-    {
-        public hadoopDataModels hadoop { get; set; }
-    }
-    public class hadoopDataResult : TransactionWrapper
-    {
-        public List<hadoopDataModels> hadoop { get; set; }
-    }
-
-
-
 
 
     public class requestReportModels

@@ -20,21 +20,31 @@ namespace GRFOCommon.Common
             public const string update = "/request/update";
             public const string delete = "/request/delete/{requestid}";
             public const string reportdata = "/request/report-data";
+
         }
+
+
+        public class customer
+        {
+            public const string getcustomerlist = "/request/get-customer-list";
+
+        }
+
+
         public class master
         {
             public const string get = "/master/get-master-data";
-            public const string AddEdit = "/master/AddEdit";            
-            public const string save = "/master/save-data";            
+            public const string AddEdit = "/master/AddEdit";
+            public const string save = "/master/save-data";
         }
-        public class hadoop
+        public class apvData
         {
-            public const string get = "/master/get-hadoop";
+            public const string get = "/master/get-apv-data";
         }
 
         public class masterdata
         {
-            public const string get = "/master/list";            
+            public const string get = "/master/list";
         }
     }
 }

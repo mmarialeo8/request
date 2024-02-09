@@ -22,6 +22,10 @@ namespace GJCommon.Common
 
             public const string ReportData = "[dbo].[Request_Report]";
 
+
+
+            public const string customerSelect = "[dbo].[GetCustomerByIds]";
+
         }
 
         public class hadoop

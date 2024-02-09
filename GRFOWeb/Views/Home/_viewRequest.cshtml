@@ -254,7 +254,7 @@
                                         <div id="divBasePartNumber">
                                             @if (Model.requestId > 0)
                                             {
-                                                await Html.RenderPartialAsync("_hadoopData_Disabled", new hadoopDataModels
+                                                await Html.RenderPartialAsync("_hadoopData_Disabled", new APVDataModels
                 {
                     partDescription = Model.partDescription,
                     annualRepairForecast = Model.annualRepairForecast,

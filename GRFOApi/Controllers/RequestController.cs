@@ -50,6 +50,15 @@ namespace GJApi.Controllers
         }
 
 
+
+        [HttpGet(apiRoute.customer.getcustomerlist)]
+        public async Task<JsonResult> GetCustomerList(string customerIds)
+        {
+            return new JsonResult(await _iRequest.GetCustomerList(customerIds));
+        }
+
+
+
         [HttpGet(apiRoute.request.reportdata)]
         public async Task<JsonResult> ReportData()
         {

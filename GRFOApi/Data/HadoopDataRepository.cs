@@ -3,55 +3,47 @@ using GJCommon.Common;
 using GRFOCommon.Models;
 using System.Data;
 using System.Data.SqlClient;
+using static GRFOCommon.Common.apiRoute;
 
 namespace GJApi.Data
 {
-    public interface IhadoopData
+    public interface IAPVDataData
     {
-        Task<hadoopDataResponse> GetHadoopDataList(string basePartNumber);
+        Task<APVDataResponse> GetApvDatList(string basePartNumber);
     }
-    public class HadoopDataRepository : IhadoopData
+    public class APVDataRepository : IAPVDataData
     {
         private readonly IConfiguration _iConfiguration;
         private readonly string sConnectionString;
-        public HadoopDataRepository(IConfiguration _iConfiguration)
+        public APVDataRepository(IConfiguration _iConfiguration)
         {
             this._iConfiguration = _iConfiguration;
-            this.sConnectionString = _iConfiguration.GetSection("ConnectionStrings:sConnectionString").Value;
+            this.sConnectionString = _iConfiguration.GetSection("ConnectionStrings:apvConnectionString").Value;
         }
 
-        public async Task<hadoopDataResponse> GetHadoopDataList(string basePartNumber)
+        public async Task<APVDataResponse> GetApvDatList(string basePartNumber)
         {
-            var result = new hadoopDataResponse();
+            var result = new APVDataResponse();
             using (IDbConnection _db = new SqlConnection(sConnectionString))
             {
                 try
                 {
 
-                    var query = @"select
-		                basePartId	
-		                ,basePartNumber	
-		                ,partDescription	
-		                ,stdCostBasePart	
-		                ,annualRepairForecast	
-		                ,extendedSpendPotential	
-		                ,t1CustomerQty	
-		                ,t2CustomerQty	
-		                ,mg3
-	                from [dbo].[hadoopData]
-	                where basePartNumber=@basePartNumber";
+                    var query = @"select material as basePartNumber, material_desc as partDescription, mg3, pbg, cost as stdCostBasePart, gfcst as annualRepairForecast, (cost*gfcst) as extendedSpendPotential from [dbo].[Part_Dimention] where material=@basePartNumber;" +
+                        "select part, dh_qty, shiptocust from [dbo].[location_part_demand_history] where part=@basePartNumber";
 
-                    var res = (await _db.QueryAsync<hadoopDataModels>
+                    var res = (await _db.QueryMultipleAsync
                         (sql: query,
                         new
                         {
                             basePartNumber = basePartNumber
                         },
-                        commandType: CommandType.Text)).FirstOrDefault();
+                        commandType: CommandType.Text));
                     if (res != null)
                     {
                         result.isTransactionDone = true;
-                        result.hadoop = res;
+                        result.APVData = res.Read<APVDataModels>().FirstOrDefault();
+                        result.locationPart = res.Read<locationPartDemandHistoryModels>().AsList();
                     }
                     else
                     {

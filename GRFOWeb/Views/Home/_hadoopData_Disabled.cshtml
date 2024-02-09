@@ -1,9 +1,13 @@
-﻿@model hadoopDataModels
+﻿@model APVDataModels
 
 
 @{
     var enabledDisabled = string.Empty;
-    if (Model != null)
+    if (Model == null)
+    {
+        enabledDisabled = string.Empty;
+    }
+    else
     {
         enabledDisabled = Model.enabledDisabledStatus;
     }
@@ -87,7 +91,15 @@
                 </div>
             </div>
         </div>
-
+        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+            <div class="form-group">
+                <label asp-for="pbg" class="col-form-label-sm">PBG:</label>
+                <div class="input-group">
+                    <input asp-for="pbg" type="text" class="form-control form-control-sm"
+                           placeholder="Product Bussiness Group" required="required" disabled>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
