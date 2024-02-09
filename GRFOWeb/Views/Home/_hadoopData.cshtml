@@ -2,7 +2,11 @@
 
 
 @{
-    var enabledDisabled = Model.enabledDisabledStatus;
+    var enabledDisabled = string.Empty;
+    if (Model != null)
+    {
+        enabledDisabled = Model.enabledDisabledStatus;
+    }
 }
 
 <!-- Show the cropped image in modal -->
