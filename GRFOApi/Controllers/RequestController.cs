@@ -98,7 +98,7 @@ namespace GJApi.Controllers
                         request.requestId = 0;
                         request.requestCategoryId = await _iMasterData.GetMasterIdByName("RepairCategory", "RepairCategoryId", "RepairCategory", item.project_type);
                         request.businessTypeId = await _iMasterData.GetMasterIdByName("BusinessType", "BusinessTypeId", "BusinessType", item.project_sub_type);
-                        request.requestSourceId = 0;
+                        request.requestSourceId = item.process_step.ToLower().Equals("first article inspection") ? 6 : (!item.process_step.ToLower().Equals("graduated") || !item.process_step.ToLower().Equals("first article inspection") || !item.process_step.ToLower().Equals("cancelled") || !item.process_step.ToLower().Equals("graduated to cancelled")) ? 5 : 0;
 
                         request.exectiveName = "-";
                         request.ccNumber = "-";

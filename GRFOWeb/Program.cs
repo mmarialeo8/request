@@ -1,7 +1,20 @@
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+
+//builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+//    .AddMicrosoftIdentityWebApp(options =>
+//    {
+//        Configuration.Bind("AzureAd", options);
+//        options.Prompt = "select_account";
+//    })
+//    .EnableTokenAcquisitionToCallDownstreamApi(new string[] { "User.Read", "Mail.Read" })
+//    .AddMicrosoftGraph(Configuration.GetSection("DownstreamApi"))
+//    .AddInMemoryTokenCaches();
+
 
 var app = builder.Build();
 

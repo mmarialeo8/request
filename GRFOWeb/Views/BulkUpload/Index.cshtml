@@ -17,7 +17,26 @@
                     <div class="card-body">
 
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-3 mb-2">
+                                <div class="form-group">
+                                    <label class="col-form-label-sm">Request Source:</label>
+                                    <div class="input-group">
+                                        <select id="requestSourceId" class="form-control" placeholder="Request Source" required="required" onchange="request_events.requestSourceChange()">
+                                            <option value="">Request Source</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 mb-2">
+                                <div class="form-group">
+                                    <label class="col-form-label-sm">Base Part Number:</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" rows="3" placeholder="Base part number..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6"></div>
+                            <div class="col-6 mb-2">
                                 <div class="form-group">
                                     <label for="exampleInputFile">Bulk Upload</label>
                                     <div class="input-group">
@@ -26,12 +45,11 @@
                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                         </div>
                                         <div class="input-group-append">
-                                            <input type="button" name="Upload" value="Upload" id="btnupload" class="btn btn-primary" />
-
-                                        </div>
-                                        <div class="input-group-append">
                                             <a asp-action="Download" asp-controller="BulkUpload" class="btn btn-success">Download</a>
                                         </div>
+                                        <div class="input-group-append">
+                                            <input type="button" name="Upload" value="Upload" id="btnupload" class="btn btn-primary" />
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +113,7 @@
 
     <script asp-append-version="true">
         $(document).ready(function () {
-
+            BindRequestSource('#requestSourceId', 0);
         });
 
         $(document).on("change", "#exampleInputFile", function () {
@@ -184,8 +202,6 @@
 
 
         });
-
-
 
     </script>
 }
