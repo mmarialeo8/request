@@ -34,5 +34,14 @@ namespace GRFOApi.Controllers
             return new JsonResult(await _iMasterData.Save(data));
         }
 
+
+
+
+        //[HttpGet(apiRoute.master.AddEdit)]
+        //public async Task<JsonResult> AddEdit(int id, string tableName, string columnId, string columnName, string columnCaption)
+        //{
+        //    return new JsonResult(await _iMasterData.GetMasterById(id, tableName, columnId, columnName, columnCaption));
+        //}
+
     }
 }

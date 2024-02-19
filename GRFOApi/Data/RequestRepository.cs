@@ -3,6 +3,7 @@ using GJCommon.Common;
 using GRFOCommon.Models;
 using System.Data;
 using System.Data.SqlClient;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GJApi.Data
 {
@@ -16,6 +17,9 @@ namespace GJApi.Data
 
 
         Task<customerResult> GetCustomerList(string customerIds);
+
+
+        Task<TransactionWrapper> GetLastRequestId();
 
     }
     public class RequestRepository : IRequest
@@ -138,7 +142,8 @@ namespace GJApi.Data
                             PrdDate = data.prdDate,
                             ExectiveName = data.exectiveName,
                             GRFOComment = data.grfoComment,
-                            ccNumber = data.ccNumber
+                            ccNumber = data.ccNumber,
+                            partRequestId = data.partRequestId
                         },
                         commandType: CommandType.StoredProcedure)).FirstOrDefault();
                     if (res != null)
@@ -268,5 +273,38 @@ namespace GJApi.Data
             return result;
         }
 
+
+        public async Task<TransactionWrapper> GetLastRequestId()
+        {
+            var result = new TransactionWrapper();
+            using (IDbConnection _db = new SqlConnection(sConnectionString))
+            {
+                try
+                {
+                    var res = (await _db.QueryAsync<string>
+                        (sql: "select ISNULL(max(partRequestId),0) partRequestId from [RMS].[dbo].[RequestMaster]",
+                    new
+                    {
+                    },
+                        commandType: CommandType.Text)).FirstOrDefault();
+                    if (res != null)
+                    {
+                        result.isTransactionDone = !res.Equals("0");
+                        result.transactionMessage = result.isTransactionDone ? res : "";
+                    }
+                    else
+                    {
+                        result.isTransactionDone = false;
+                        result.transactionMessage = "Error in save";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result.isTransactionDone = false;
+                    result.transactionMessage = ex.ToString();
+                }
+            }
+            return result;
+        }
     }
 }

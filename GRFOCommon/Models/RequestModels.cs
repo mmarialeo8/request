@@ -56,6 +56,7 @@ namespace GRFOCommon.Models
         public virtual string? exectiveName { get; set; }
         public virtual string? grfoComment { get; set; }
         public virtual string? ccNumber { get; set; }
+        public virtual int partRequestId { get; set; }
 
     }
 

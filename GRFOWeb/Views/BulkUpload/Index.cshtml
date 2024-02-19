@@ -1,0 +1,192 @@
+﻿@{
+    ViewData["Title"] = "Bulk Update";
+}
+
+
+
+<input id="hdfLastRequestId" type="hidden" value="@ViewBag.lastRequestId" />
+
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Bulk Upload</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="exampleInputFile">
+                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <input type="button" name="Upload" value="Upload" id="btnupload" class="btn btn-primary" />
+
+                                        </div>
+                                        <div class="input-group-append">
+                                            <a asp-action="Download" asp-controller="BulkUpload" class="btn btn-success">Download</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-12">
+                                <div class="card card-primary card-outline">
+                                  <div class="card-header">
+                                    <h5 class="card-title m-0">Verify Data</h5>
+                                  </div>
+                                  <div class="card-body">                                    
+                                    <div id="divPrint" style="width:100%; overflow-x:scroll;">
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+
+@section Scripts
+{
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
+    <!-- DataTables  & Plugins -->
+    <script src="/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="/assets/plugins/jszip/jszip.min.js"></script>
+    <script src="/assets/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="/assets/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script src="~/assets/js/migration/download-data.js"></script>
+
+    <script asp-append-version="true">
+        $(document).ready(function () {
+
+        });
+
+        $(document).on("change", "#exampleInputFile", function () {
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#exampleInputFile').val();
+            if (filename.length == 0) {
+                $(".custom-file-label").html('Choose file')
+                alert("Please select a file.");
+                return false;
+            }
+            else {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) == -1) {
+                    $(".custom-file-label").html('Choose file')
+                    alert("Please select only excel files.");
+                    return false;
+                }
+            }
+            var fdata = new FormData();
+            var fileUpload = $("#exampleInputFile").get(0);
+            var files = fileUpload.files;
+            $(".custom-file-label").html(files[0].name);
+            var isUpload = true;
+            const file = Math.round((files[0].size / 1024));
+            if (file >= 2048) {
+                isUpload = false;
+                $(".custom-file-label").html('Choose file')
+                alert("File too Big, Please select a file less than 2mb");
+            }
+        });
+
+        $('#btnupload').on('click', function () {
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#exampleInputFile').val();
+            if (filename.length == 0) {
+                alert("Please select a file.");
+                $(".custom-file-label").html('Choose file')
+                return false;
+            }
+            else {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) == -1) {
+                    alert("Please select only excel files.");
+                    $(".custom-file-label").html('Choose file')
+                    return false;
+                }
+            }
+            var fdata = new FormData();
+            var fileUpload = $("#exampleInputFile").get(0);
+            var files = fileUpload.files;
+            $(".custom-file-label").html(files[0].name);
+            var isUpload = true;
+            const file = Math.round((files[0].size / 1024));
+            if (file >= 2048) {
+                isUpload = false;
+                $(".custom-file-label").html('Choose file')
+                alert("File too Big, Please select a file less than 2mb");
+            }
+
+            if(isUpload)
+            {
+                fdata.append(files[0].name, files[0]);
+                $.ajax({
+                    type: "POST",
+                    url: "/bulk-update/validate-data",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    data: fdata,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.length == 0)
+                            alert('Some error occured while uploading');
+                        else {
+                            $('#divPrint').html(response);
+                        }
+                    },
+                    error: function (e) {
+                        $('#divPrint').html(e.responseText);
+                    }
+                });
+            }
+
+
+
+        });
+
+
+
+    </script>
+}
+

@@ -1,4 +1,5 @@
 ﻿using GJApi.Data;
+using GRFOApi.Data;
 using System.Security.Principal;
 
 namespace GJApi
@@ -19,6 +20,11 @@ namespace GJApi
             #endregion
 
 
+            #region GPST Data
+
+            services.AddSingleton<IMigrationData, MigrationDataRepository>();
+
+            #endregion
         }
     }
 }

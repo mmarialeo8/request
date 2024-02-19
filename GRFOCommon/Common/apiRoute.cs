@@ -21,6 +21,12 @@ namespace GRFOCommon.Common
             public const string delete = "/request/delete/{requestid}";
             public const string reportdata = "/request/report-data";
 
+
+
+            public const string getlastrequestId = "/request/get-request-id";
+            public const string downloadupdatedata= "/request/download-update-data";
+
+
         }
 
 
@@ -45,6 +51,12 @@ namespace GRFOCommon.Common
         public class masterdata
         {
             public const string get = "/master/list";
+        }
+
+
+        public class datamigration
+        {
+            public const string GetNonMigratedData = "/migration/get-non-migrated-data";
         }
     }
 }
