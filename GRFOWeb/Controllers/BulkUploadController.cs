@@ -13,6 +13,7 @@ namespace GRFOWeb.Controllers
 {
     public class BulkUploadController : Controller
     {
+       
         [Route("/bulk-update")]
         public IActionResult Index()
         {
@@ -115,7 +116,6 @@ namespace GRFOWeb.Controllers
             }
             return this.Content(sb.ToString());
         }
-
 
         [Route("/bulk-upload/donwload-template")]
         public async Task<IActionResult> Export(string requestSource, string basePartNumber)
@@ -239,7 +239,6 @@ namespace GRFOWeb.Controllers
             return dt;
         }
 
-
         public bool ValidateExcelFile(IRow headerRow)
         {
             bool isValid = true;
@@ -280,5 +279,6 @@ namespace GRFOWeb.Controllers
             int id = JsonConvert.DeserializeObject<int>(transactionResult);
             return (id != 0);
         }
+   
     }
 }
