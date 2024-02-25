@@ -8,6 +8,10 @@ namespace GJCommon.Common
 {
     public class StoreProcedure
     {
+        public class Account
+        {
+            public const string authenticate = "[dbo].[Authenticate_User]";
+        }
         public class Dashboard
         {
             public const string SelectAll = "[dbo].[DashboardData_SelectAll]";         

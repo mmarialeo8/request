@@ -36,6 +36,11 @@ namespace GRFOApi.Controllers
 
 
 
+        [HttpGet(apiRoute.master.getmasteridbyname)]
+        public async Task<JsonResult> GetMasterIdByName(string tableName, string columnIdName, string columnName, string columnValue)
+        {
+            return new JsonResult(await _iMasterData.GetMasterIdByName( tableName, columnIdName, columnName, columnValue));
+        }
 
         //[HttpGet(apiRoute.master.AddEdit)]
         //public async Task<JsonResult> AddEdit(int id, string tableName, string columnId, string columnName, string columnCaption)

@@ -36,12 +36,19 @@ namespace GRFOCommon.Common
 
         }
 
-
+        public class account
+        {
+            public const string authenticate = "/account/authenticate";
+        }
         public class master
         {
             public const string get = "/master/get-master-data";
             public const string AddEdit = "/master/AddEdit";
             public const string save = "/master/save-data";
+
+            public const string getmasteridbyname = "/master/get-master-id-by-name";
+
+            
         }
         public class apvData
         {

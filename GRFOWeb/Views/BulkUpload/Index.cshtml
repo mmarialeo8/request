@@ -2,40 +2,46 @@
     ViewData["Title"] = "Bulk Update";
 }
 
-
-
 <input id="hdfLastRequestId" type="hidden" value="@ViewBag.lastRequestId" />
-
-
+ 
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-
                     <div class="card-body">
-
+                        <form id="frmBulkUpload" class="form-horizontal form-label-left" novalidate>
+                            <div class="row">
+                                <div class="col-3 mb-2">
+                                    <div class="form-group">
+                                        <label class="col-form-label-sm">Request Source:</label>
+                                        <div class="input-group">
+                                            <select id="requestSourceId" class="form-control" placeholder="Request Source" 
+                                            required="required">
+                                                <option value="">Request Source</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <div class="form-group">
+                                        <label class="col-form-label-sm">Base Part Number:</label>
+                                        <div class="input-group">
+                                            <textarea id="basePartNumbers" class="form-control" rows="3" placeholder="Base part number..." required="required" ></textarea>
+                                            
+                                        </div>
+                                        <span class="text-danger">Enter basepart number new-line comma or separated</span>
+                                    </div>
+                                </div>
+                                <div class="col-3 mt-5">
+                                    <div class="input-group-append">
+                                        <input type="button" class="btn btn-success" value="Download" onclick="bulk_upload_events.downloadTemplate();" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                         <div class="row">
-                            <div class="col-3 mb-2">
-                                <div class="form-group">
-                                    <label class="col-form-label-sm">Request Source:</label>
-                                    <div class="input-group">
-                                        <select id="requestSourceId" class="form-control" placeholder="Request Source" required="required" onchange="request_events.requestSourceChange()">
-                                            <option value="">Request Source</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-3 mb-2">
-                                <div class="form-group">
-                                    <label class="col-form-label-sm">Base Part Number:</label>
-                                    <div class="input-group">
-                                        <textarea class="form-control" rows="3" placeholder="Base part number..."></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6"></div>
                             <div class="col-6 mb-2">
                                 <div class="form-group">
                                     <label for="exampleInputFile">Bulk Upload</label>
@@ -44,9 +50,7 @@
                                             <input type="file" class="custom-file-input" id="exampleInputFile">
                                             <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                         </div>
-                                        <div class="input-group-append">
-                                            <a asp-action="Download" asp-controller="BulkUpload" class="btn btn-success">Download</a>
-                                        </div>
+                                        
                                         <div class="input-group-append">
                                             <input type="button" name="Upload" value="Upload" id="btnupload" class="btn btn-primary" />
                                         </div>                                        
@@ -109,7 +113,8 @@
     <script src="/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-    <script src="~/assets/js/migration/download-data.js"></script>
+    <script src="~/assets/js/request/request-validate.js"></script>
+    <script src="~/assets/js/bulkupload/bulk-upload.js"></script>
 
     <script asp-append-version="true">
         $(document).ready(function () {
