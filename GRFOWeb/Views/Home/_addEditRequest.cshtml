@@ -253,18 +253,17 @@
                                             @if (Model.requestId > 0)
                                             {
                                                 await Html.RenderPartialAsync("_hadoopData", new APVDataModels
-                {
-                    partDescription = Model.partDescription,
-                    annualRepairForecast = Model.annualRepairForecast,
-                    stdCostBasePart = Model.stdCostBasePart,
-                    extendedSpendPotential = Model.extendedSpendPotential,
-                    t1CustomerQty = Model.t1CustomerQty,
-                    t2CustomerQty = Model.t2CustomerQty,
-                    mg3 = Model.mg3,
-                    pbg = Model.pbg,
-                                            enabledDisabledStatus = "-"
-
-                });
+                                                {
+                                                    partDescription = Model.partDescription,
+                                                    annualRepairForecast = Model.annualRepairForecast,
+                                                    stdCostBasePart = Model.stdCostBasePart,
+                                                    extendedSpendPotential = Model.extendedSpendPotential,
+                                                    t1CustomerQty = Model.t1CustomerQty,
+                                                    t2CustomerQty = Model.t2CustomerQty,
+                                                    mg3 = Model.mg3,
+                                                    pbg = Model.pbg,
+                                                    enabledDisabledStatus = "-"
+                                                });
                                             }
                                         </div>
                                     </div>

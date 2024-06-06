@@ -25,6 +25,10 @@ namespace GJApi
             services.AddSingleton<IMigrationData, MigrationDataRepository>();
 
             #endregion
+
+
+            services.AddSingleton<IAccount, AccountRepository>();
+
         }
     }
 }
