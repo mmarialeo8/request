@@ -89,13 +89,13 @@ namespace GRFOWeb.Controllers
                                         string columnName = string.Empty;
                                         string columnNameValue = row.GetCell(j).ToString();
 
-                                        var errorClass = await validateColumnData(columnName, columnNameValue) ? "" : "class=''";
+                                        var errorClass = await validateColumnData(columnName, columnNameValue) ? "" : "class='bg-danger'";
 
                                         sb.Append("<td " + errorClass + ">" + row.GetCell(j).ToString() + "</td>");
                                     }
                                     else
                                     {
-                                        sb.Append("<td></td>");
+                                        sb.Append("<td class='bg-danger'></td>");
                                     }
                                 }
                                 sb.AppendLine("</tr>");

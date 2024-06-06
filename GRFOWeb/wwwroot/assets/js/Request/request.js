@@ -56,42 +56,42 @@ var request_events = function () {
 
     },
         addRequest = function () {
-            $.ajax({
-                url: '/request/add',
-                contentType: 'application/html; charset=utf-8',
-                type: 'GET',
-                dataType: 'html',
-                success: function (result) {
-                    $('#divcontent').empty();
-                    $('#divcontent').html(result);
-                    $('#staticBackdrop').modal('show');
+            //$.ajax({
+            //    url: '/request/add',
+            //    contentType: 'application/html; charset=utf-8',
+            //    type: 'GET',
+            //    dataType: 'html',
+            //    success: function (result) {
+            //        $('#divcontent').empty();
+            //        $('#divcontent').html(result);
+            //        $('#staticBackdrop').modal('show');
 
 
-                    $('[data-mask]').inputmask();
+            //        $('[data-mask]').inputmask();
 
-                    BindRequestCategory('#requestCategoryId', $('#hdfrequestCategoryId').val());
+            //        BindRequestCategory('#requestCategoryId', $('#hdfrequestCategoryId').val());
 
-                    BindBussinessType('#businessTypeId', $('#hdfbusinessTypeId').val());
+            //        BindBussinessType('#businessTypeId', $('#hdfbusinessTypeId').val());
 
-                    BindRequestSource('#requestSourceId', $('#hdfrequestSourceId').val());
+            //        BindRequestSource('#requestSourceId', $('#hdfrequestSourceId').val());
 
-                    BindRepairLocation('#repairLocationId', $('#hdfrepairLocationId').val());
+            //        BindRepairLocation('#repairLocationId', $('#hdfrepairLocationId').val());
 
-                    BindCustomerLocation('#customerLocationId', $('#hdfcustomerLocationId').val());
+            //        BindCustomerLocation('#customerLocationId', $('#hdfcustomerLocationId').val());
 
-                    BindBuName('#buNameId', $('#hdfcustomerLocationId').val());
+            //        BindBuName('#buNameId', $('#hdfcustomerLocationId').val());
 
 
-                    //$('#frmRequestDetails')
-                    //    .on('blur', 'input[required], input.optional, select.required', validator.checkField)
-                    //    .on('change', 'select.required', validator.checkField)
-                    //    .on('keypress', 'input[required][pattern]', validator.keypress);
+            //        //$('#frmRequestDetails')
+            //        //    .on('blur', 'input[required], input.optional, select.required', validator.checkField)
+            //        //    .on('change', 'select.required', validator.checkField)
+            //        //    .on('keypress', 'input[required][pattern]', validator.keypress);
 
-                },
-                error: function (xhr, status) {
-                    alert(status);
-                }
-            });
+            //    },
+            //    error: function (xhr, status) {
+            //        alert(status);
+            //    }
+            //});
         },
         onBasePartNumberChange = function (e) {
             $.ajax({

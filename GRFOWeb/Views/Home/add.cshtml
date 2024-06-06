@@ -1,0 +1,381 @@
+﻿@model RequestPostModels
+
+@{
+    ViewData["Title"] = "Add/Edit Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <form id="frmRequestDetails" class="form-horizontal form-label-left" novalidate>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_content">
+
+                                <input type="hidden" asp-for="requestId" />
+                                <input type="hidden" id="hdfrequestCategoryId" value="@Model.requestCategoryId" />
+                                <input type="hidden" id="hdfbusinessTypeId" value="@Model.businessTypeId" />
+                                <input type="hidden" id="hdfrequestSourceId" value="@Model.requestSourceId" />
+                                <input type="hidden" id="hdfcustomerLocationId" value="@Model.customerLocationId" />
+                                <input type="hidden" id="hdfbuNameId" value="@Model.hdfbuNameId" />
+                                <input type="hidden" id="hdfrepairLocationId" value="@Model.repairLocationId" />
+
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Request Details</h3>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="requestCategoryId" class="col-form-label-sm">Request Category:</label>
+                                                    <div class="input-group">
+                                                        <select asp-for="requestCategoryId" class="form-control form-control-sm" placeholder="Request Category" required="required">
+                                                            <option value="0">Request Category</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="businessTypeId" class="col-form-label-sm">Business Type:</label>
+                                                    <div class="input-group">
+                                                        <select asp-for="businessTypeId" class="form-control form-control-sm" placeholder="Business Type" required="required" onchange="request_events.onBussinessTypeChange(this);">
+                                                            <option value="">Business Type</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="requestSourceId" class="col-form-label-sm">Request Source:</label>
+                                                    <div class="input-group">
+                                                        <select asp-for="requestSourceId" class="form-control form-control-sm" placeholder="Request Source" required="required" onchange="request_events.requestSourceChange()">
+                                                            <option value="">Request Source</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group" id="divExectiveName" style="display:none">
+                                                <div class="form-group">
+                                                    <label asp-for="exectiveName" class="col-form-label-sm">Exective Name:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="exectiveName" type="text" class="form-control form-control-sm"
+                                                               placeholder="Exective Name" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group" id="divCCNumber" style="display:none">
+                                                <div class="form-group">
+                                                    <label asp-for="ccNumber" class="col-form-label-sm">CC Number:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="ccNumber" type="text" class="form-control form-control-sm"
+                                                               placeholder="CC Number" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group" id="divGRFOComment" style="display:none">
+                                                <div class="form-group">
+                                                    <label asp-for="grfoComment" class="col-form-label-sm">GRFO Comment:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="grfoComment" type="text"
+                                                               class="form-control form-control-sm"
+                                                               placeholder="GRFO Comment" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="requestorProjectGroup" class="col-form-label-sm">Requestor Project Group:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="requestorProjectGroup" type="text"
+                                                               class="form-control form-control-sm"
+                                                               placeholder="Requestor Project Group" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="requestor" class="col-form-label-sm">Requestor:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="requestor" type="text" class="form-control form-control-sm"
+                                                               placeholder="Requestor" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <label asp-for="basePartNumber" class="col-form-label-sm">Base Part Number:</label>
+                                                <!-- radio -->
+                                                <div class="form-group row">
+                                                    <div class="icheck-primary d-inline col-6">
+                                                        <input type="radio" id="rdoSingle" name="r1" checked="">
+                                                        <label for="rdoSingle">
+                                                            Single
+                                                        </label>
+                                                    </div>
+                                                    <div class="icheck-primary d-inline col-6">
+                                                        <input type="radio" id="rdoMultiple" name="r1">
+                                                        <label for="rdoMultiple">
+                                                            multiple
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="basePartNumber" class="col-form-label-sm">Base Part Number:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="basePartNumber" type="text" class="form-control form-control-sm"
+                                                               placeholder="Base Part Number"
+                                                               required="required"
+                                                               onchange="request_events.onBasePartNumberChange(this);">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="solutionPartNumber" class="col-form-label-sm">Solution Part Number:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="solutionPartNumber" type="text" class="form-control form-control-sm"
+                                                               placeholder="Solution Part Number"
+                                                               required="required"
+                                                               onchange="request_events.onSolutionPartNumberChange()">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+
+                                                    <label asp-for="needByDate" class="col-form-label-sm">Need By Date:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="needByDate" type="text"
+                                                               class="form-control form-control-sm"
+                                                               data-inputmask-alias="datetime"
+                                                               data-inputmask-inputformat="dd/mm/yyyy"
+                                                               data-mask>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="buNameId" class="col-form-label-sm">BU Name:</label>
+                                                    <div class="input-group">
+                                                        <select asp-for="buNameId" class="form-control form-control-sm" placeholder="First Name" required="required">
+                                                            <option value="">BU Name</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="repairLocationId" class="col-form-label-sm">Repair Site:</label>
+                                                    <div class="input-group">
+                                                        <select asp-for="repairLocationId" class="form-control form-control-sm" placeholder="Repair Site" required="required">
+                                                            <option value="">Repair Site</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="targetCustomer" class="col-form-label-sm">Target Customer:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="targetCustomer" type="text" class="form-control form-control-sm" placeholder="Target Customer"
+                                                               required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="customerLocationId" class="col-form-label-sm">Customer Location:</label>
+                                                    <div class="input-group">
+                                                        <select asp-for="customerLocationId" class="form-control form-control-sm" placeholder="Repair Site" required="required">
+                                                            <option value="">Customer Location</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="annualRepairForecast1" class="col-form-label-sm">Annual Repair Forecast (Y1):</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="annualRepairForecast1" type="text" class="form-control form-control-sm"
+                                                               placeholder="Annual Repair Forecast (Y1)"
+                                                               required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="annualRepairForecast2" class="col-form-label-sm">Annual Repair Forecast (Y2):</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="annualRepairForecast2" type="text"
+                                                               class="form-control form-control-sm"
+                                                               placeholder="Annual Repair Forecast (Y2)" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback item form-group">
+                                                <div class="form-group">
+                                                    <label asp-for="comments" class="col-form-label-sm">Comments:</label>
+                                                    <div class="input-group">
+                                                        <input asp-for="comments" type="text" class="form-control form-control-sm" placeholder="Comments"
+                                                               required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Base Part Details <i class="fa fa-home text-white" onclick="request_events.onBasePartNumberChange()"></i></h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="divBasePartNumber">
+                                            @if (Model.requestId > 0)
+                                            {
+                                                await Html.RenderPartialAsync("_hadoopData", new APVDataModels
+                {
+                    partDescription = Model.partDescription,
+                    annualRepairForecast = Model.annualRepairForecast,
+                    stdCostBasePart = Model.stdCostBasePart,
+                    extendedSpendPotential = Model.extendedSpendPotential,
+                    t1CustomerQty = Model.t1CustomerQty,
+                    t2CustomerQty = Model.t2CustomerQty,
+                    mg3 = Model.mg3,
+                    pbg = Model.pbg,
+                    enabledDisabledStatus = "-"
+
+                });
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card card-primary d-none">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Status </h3>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                                                Screening Status:
+                                                <label>
+                                                    @Model.screeningStatus
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                                                Business Case Status:
+                                                <label>
+                                                    @Model.businessCaseStatus
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                                                Pilot Review Status:
+                                                <label>
+                                                    @Model.pilotReviewStatus
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+                                                <label>
+                                                    <input type="checkbox" class="flat"> Pilot Execution
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback item form-group">
+
+                                                <div class="form-group">
+                                                    <label asp-for="prdDate" class="col-form-label-sm">Pilot Execution Date:</label>
+                                                    <div class="input-group">
+
+                                                        <input type="text" class="form-control " asp-for="prdDate"
+                                                               placeholder="Pilot Execution Date"
+                                                               data-inputmask-alias="datetime"
+                                                               data-inputmask-inputformat="dd/mm/yyyy"
+                                                               data-mask>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-secondary" href="/">Cancel</a>
+                    <a class="btn btn-primary" onclick="request_events.saveRequest()">Save</a>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+
+
+<!-- /.content -->
+@section Scripts
+{
+    <script src="~/assets/js/request/request-validate.js"></script>
+    <script src="~/assets/js/request/request.js"></script>
+
+    <script asp-append-version="true">
+        $(document).ready(function () {
+
+            $('[data-mask]').inputmask();
+
+            BindRequestCategory('#requestCategoryId', $('#hdfrequestCategoryId').val());
+
+            BindBussinessType('#businessTypeId', $('#hdfbusinessTypeId').val());
+
+            BindRequestSource('#requestSourceId', $('#hdfrequestSourceId').val());
+
+            BindRepairLocation('#repairLocationId', $('#hdfrepairLocationId').val());
+
+            BindCustomerLocation('#customerLocationId', $('#hdfcustomerLocationId').val());
+
+            BindBuName('#buNameId', $('#hdfcustomerLocationId').val());
+
+        });
+    </script>
+}

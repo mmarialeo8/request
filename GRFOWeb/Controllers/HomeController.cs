@@ -37,7 +37,7 @@ namespace GRFOWeb.Controllers
         [HttpGet("/request/add")]
         public async Task<IActionResult> Add()
         {
-            return PartialView("_addEditRequest", new RequestPostModels());
+            return View("add", new RequestPostModels());
         }
 
         [HttpGet("/request/load-hadoop-data")]

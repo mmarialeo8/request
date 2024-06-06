@@ -378,4 +378,8 @@
     <ProjectReference Include="..\GRFOCommon\GRFOCommon.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Framwork\" />
+  </ItemGroup>
+
 </Project>

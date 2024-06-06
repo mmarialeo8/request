@@ -32,7 +32,7 @@ var bulk_upload_events = function () {
     //    });
     //},
     downloadTemplate = function (requestId) {
-       
+
         alert(JSON.stringify({
             requestSource: $("#requestSourceId option:selected").text(),
             basePartNumber: $('#basePartNumbers').val(),
@@ -41,11 +41,11 @@ var bulk_upload_events = function () {
         $("#frmBulkUpload").validate({
             rules: {
                 requestSourceId: "required",
-                basePartNumbers: "required"                
+                basePartNumbers: "required"
             },
             messages: {
                 requestSourceId: "Request source is required",
-                basePartNumbers: "Base part numbers is required",             
+                basePartNumbers: "Base part numbers is required",
             },
             errorElement: 'span',
             errorPlacement: function (error, element) {
@@ -59,9 +59,9 @@ var bulk_upload_events = function () {
                 $(element).removeClass('is-invalid');
             }
         });
-        if ($("#frmBulkUpload").valid()) {            
+        if ($("#frmBulkUpload").valid()) {
             $.ajax({
-                url: '/bulk-upload/donwload-template',                
+                url: '/bulk-upload/donwload-template',
                 data: {
                     requestSource: $("#requestSourceId option:selected").text(),
                     basePartNumber: $('#basePartNumbers').val(),
@@ -94,10 +94,46 @@ var bulk_upload_events = function () {
             });
         }
 
-            
-        }
+
+    }
     return {
         //loadNonMigratedData: loadNonMigratedData,
-        downloadTemplate: downloadTemplate
+        downloadTemplate: downloadTemplate,
     }
 }();
+
+
+
+
+
+downloadTemplate = function (requestId) {
+
+    $.ajax({
+        url: '/bulk-upload/donwload-template',        
+        method: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (result) {
+            // Create a temporary anchor element
+            var downloadLink = document.createElement('a');
+            var blob = new Blob([result], { type: 'application/octet-stream' });
+            var url = window.URL.createObjectURL(blob);
+
+            // Set the href attribute of the anchor element to the Object URL
+            downloadLink.href = url;
+
+            // Set the download attribute to specify the filename
+            downloadLink.download = 'Request_Master.xlsx';
+
+            // Click the anchor element programmatically to trigger the download
+            downloadLink.click();
+
+            // Cleanup
+            window.URL.revokeObjectURL(url);
+        },
+        error: function (xhr, status) {
+            console.error('Error downloading file:', error);
+        }
+    });
+}
